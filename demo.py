@@ -22,7 +22,7 @@ vx = 0
 vy = 0
 ACCEL = 0.001
 frame_time = pygame.time.get_ticks()
-
+player = tiled_map.get_object_by_name("player_1")
 while True:
 
     # time of current frame
@@ -43,11 +43,17 @@ while True:
         delay = 1
             
     # simulation stuff goes here 
-    
-    # draw all tiles in layers to screen and flip
-    screen.fill( (255,255,255) )
-    for layer in tiled_map.layers:
-        for t_x, t_y, tile_image in layer.tiles():
-            screen.blit(tile_image, (t_x * 32, t_y * 32))
 
+    
+    # draw the background
+    screen.fill( (135, 206 , 250) )
+
+    # draw all tiles in world layer to screen and flip
+    world = tiled_map.get_layer_by_name("world")
+    for t_x, t_y, tile_image in world.tiles():
+        screen.blit(tile_image, (t_x * 32, t_y * 32))
+
+    # draw the player (yellow box is player place-holder for now)
+    screen.blit(player.image, (player.x,player.y))    
+    
     pygame.display.flip()

@@ -4,164 +4,80 @@ import sys
 
 
 class vector2:
-   # note, no data member declarations needed
+    def __init__(self, xy):
+        self.x = xy[0]
+        self.y = xy[1]
 
-   # constructor
-   def __init__(self, x, y):
-      # unlike C/Java, no implicit "this" pointer
-      # instead, reference is passed in as first argument (self in this case)
-      self.x = x
-      self.y = y
-      self.vx = 0
-      self.vy = 0
-   # method definitions
-   def add(self, other):
-      v = vector2(self.x + other.x, self.y + other.y)
-      return v
+    def __str__(self):
+        return "({}, {})".format(self.x, self.y)
 
-   def subtract(self, other):
+    def xy(self):
+        return (self.x,self.y)
 
-      v = vector2(1,1)
+    def add(self, other):
+        ans = vector2(self.xy())
+        ans.x += other.x
+        ans.y += other.y
+        return ans
 
-      if(self.x > other.x):
-         v.x = (self.x - other.x)
-      else:
-         v.x = ( (other.x - self.x) * (-1) )
+    def sub(self, other):
+        ans = vector2(self.xy())
+        ans.x -= other.x
+        ans.y -= other.y
+        return ans
 
-      if(self.y > other.y):
-         v.y = (self.y - other.y)
-      else:
-         v.y = ( (other.y - self.y) * (-1) )
+    def magnitude(self):
+        return math.sqrt(self.x*self.x + self.y*self.y)
 
-      return v
-    
-   def scale(self, scalar):
-      v = vector2(self.x * scalar, self.y * scalar)
-      return v
+    def normalized(self):
+        ans = vector2(self.xy())
+        mag = self.magnitude()
+        ans.x /= mag
+        ans.y /= mag
+        return ans
 
-   def magnitude(self):
-      m = math.sqrt( (self.x *  self.x) + (self.y * self.y) )
-      #print "</magnitude>"
-      return m
-
-   def normalize(self):
-      magnitude = self.magnitude() 
-      self.x = ( self.x / magnitude )
-      self.y = ( self.y / magnitude )
-      return
-   
-
-   # overload return-this-as-string for printing
-   def __str__(self):
-      # format allows you to replace "{}" with variable values
-      return "({}, {})".format(self.x, self.y)
+    def scale(self, s):
+        ans = vector2(self.xy())
+        ans.x *= s
+        ans.y *= s
+        return ans
 
 class sprite2:
-   # constructor
-   def __init__(self, x, y, vx, vy):
-      pygame.image = pygame.Surface((50,50))
-      self.x = x
-      self.y = y
-      self.vx = vx
-      self.vy = vy
-      self.radius = 50
-      self.color = (0,255,0)
-      self.thickness = 10
-   # method definitions
-   
-   def update(self, delta):
+    def __init__(self, image_filename, position_xy, initial_velocity_xy):
+        # by convention, you initialize your data members here
 
-      #check for wall collision
-      if ((self.x + self.vx + self.radius) > 1024):
-         self.x = 1024 - self.radius
-         self.vx = self.vx * (-1)
-      elif ((self.x + self.vx - self.radius) < 0):
-         self.x = self.radius
-         self.vx = self.vx * (-1)
+        img = pygame.image.load( image_filename ).convert()
+        self.size = [int(x*0.2) for x in img.get_size()]
+        self.img = pygame.transform.scale(img, self.size)
 
-      if ((self.y + self.vy + self.radius) > 768):
-         self.y = 768 - self.radius
-         self.vy = self.vy * (-1)
-      elif ((self.y + self.vy - self.radius) < 0):
-         self.y = self.radius
-         self.vy = self.vy * (-1)
+        self.radius = self.size[0]/2
 
-      #update positions
-      self.x = ( self.x + (self.vx * delta) )
-      self.y = ( self.y + (self.vy * delta) )
-      return
+        self.position = vector2(position_xy)
+        self.velocity = vector2(initial_velocity_xy)
 
-   def collision_check(self, list, screen):
-      cx = 1
-      cy = 1
-      cn = 1
-      for obj in list:
-         if ( (self.x != obj.x) & (self.y != obj.y) ):
-            '''
-            if(self.x > obj.x):
-               cx = self.x - obj.x
-               cy = self.y - obj.y
-            else:
-               cx = obj.x - self.x
-               cy = obj.y - self.y
-            
-            '''
-            if(self.x > obj.x):
-               cx = self.x - obj.x
-            else:
-               cx = obj.x - self.x
-            if(self.y > obj.y):
-               cy = self.y - obj.y
-            else:
-               cy = obj.y - self.y
-            
-            cn = math.sqrt((cy*cy) + (cx*cx))
-            #print "cn"
-            #print cn
-            #print "self.radius + obj.radius"
-            #print (self.radius + obj.radius)
-            #if circles overlap
-            if (cn < (self.radius + obj.radius )):
-               #change color of circles
-               if ( (self.color != (255,0,0)) & (obj.color != (255,0,0)) ):
-                  self.color = (255,0,0)
-                  obj.color = (255,0,0)
-                  
-               elif ( (self.color != (0,0,255)) & (obj.color != (0,0,255)) ):
-                  self.color = (0,0,255)
-                  obj.color = (0,0,255)
-                  
-               elif ( (self.color != (0,255,0)) & (obj.color != (0,255,0)) ):
-                  self.color = (0,255,0)
-                  obj.color = (0,255,0)
-                  
-               if(self.x > obj.x):
-                  self.x = (self.x + (self.x-obj.x) + 1)
-               elif(obj.x > self.x):
-                  obj.x = (obj.x + (obj.x-self.x) + 1)
-               if(self.y > obj.y):
-                  self.y = (self.y + (self.y-obj.y) + 1)
-               elif(obj.y > self.y):
-                  obj.y = (obj.y + (obj.y-self.y) + 1)
+    def update(self, delta):
+        # here's where you should put the code that updates position
+        #  from velocity (pretty simple w/o acceleration or target)
+        # (remove "pass" when you add code)
+        self.position = self.position.add(self.velocity.scale(delta))
 
-               self.draw(screen)
-               obj.draw(screen)
-               pygame.display.flip()
-               self.vx = self.vx * (-1)
-               self.vy = self.vy * (-1)
-               obj.vx = obj.vx * (-1)
-               obj.vy = obj.vy * (-1)
-               
+        # detect wall collisions
+        if self.position.x + self.radius >= SCREEN_WIDTH:
+            self.position.x = SCREEN_WIDTH - self.radius
+            self.velocity.x = -self.velocity.x
+        elif self.position.x - self.radius <= 0:
+            self.position.x = self.radius
+            self.velocity.x = -self.velocity.x
 
-   def draw(self, screen):
-      pygame.draw.circle(screen, self.color, (self.x,self.y), self.radius)
-      return
+        if self.position.y + self.radius >= SCREEN_HEIGHT:
+            self.position.y = SCREEN_HEIGHT - self.radius
+            self.velocity.y = -self.velocity.y
+        elif self.position.y - self.radius <= 0:
+            self.position.y = self.radius
+            self.velocity.y = -self.velocity.y
 
-   def magnitude(self):
-      m = math.sqrt( (self.x *  self.x) + (self.y * self.y) )
-      return m
-   
-   # overload return-this-as-string for printing
-   def __str__(self):
-      # format allows you to replace "{}" with variable values
-      return "({}, {})".format(self.x, self.y)
+    def draw(self, screen):
+        # here's where you put the code that draws this sprite's img
+        #  to the passed in screen (then add a circle behind it)
+        pygame.draw.circle(screen, (255,255,255), (int(self.position.x), int(self.position.y)), self.radius)
+        screen.blit(self.img, (self.position.x-self.size[0]/2, self.position.y-self.size[1]/2))
