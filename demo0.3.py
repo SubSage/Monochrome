@@ -41,7 +41,7 @@ while True:
             sys.exit()
             inputX = 0
         #code for movement
-            
+        """    
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             inputX -= 1
@@ -64,6 +64,8 @@ while True:
             player.y = -0.3
 
         if player.y > 
+        
+        """
     delay = (pygame.time.get_ticks() - frame_time)
     if (delay == 0):
         delay = 1
