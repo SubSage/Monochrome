@@ -21,8 +21,11 @@ y = 10
 vx = 0
 vy = 0
 ACCEL = 0.001
+tile_width = 32
+tile_height = 32
 frame_time = pygame.time.get_ticks()
 player = tiled_map.get_object_by_name("player_1")
+
 while True:
 
     # time of current frame
@@ -43,7 +46,7 @@ while True:
         delay = 1
             
     # simulation stuff goes here 
-
+    #print player.name # this is how you print out attributes of objects from tmx file
     
     # draw the background
     screen.fill( (135, 206 , 250) )
@@ -51,7 +54,7 @@ while True:
     # draw all tiles in world layer to screen and flip
     world = tiled_map.get_layer_by_name("world")
     for t_x, t_y, tile_image in world.tiles():
-        screen.blit(tile_image, (t_x * 32, t_y * 32))
+        screen.blit(tile_image, (t_x * tile_width, t_y * tile_height))
 
     # draw the player (yellow box is player place-holder for now)
     screen.blit(player.image, (player.x,player.y))    
