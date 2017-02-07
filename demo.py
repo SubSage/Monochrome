@@ -20,6 +20,8 @@ x = 10
 y = 10
 vx = 0
 vy = 0
+cameraX=0
+cameraY=0
 ACCEL = 0.001
 tile_width = 32
 tile_height = 32
@@ -40,7 +42,11 @@ while True:
         elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_ESCAPE:
             pygame.quit()
             sys.exit()
-            
+        elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_RIGHT:
+            cameraX = cameraX + 32
+        elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_LEFT:
+            cameraX = cameraX - 32   
+    # we need to investiage this chunk
     delay = (pygame.time.get_ticks() - frame_time)
     if (delay == 0):
         delay = 1
@@ -53,10 +59,15 @@ while True:
 
     # draw all tiles in world layer to screen and flip
     world = tiled_map.get_layer_by_name("world")
+
+    # camera controls
+    #cameraX = cameraX+1
+    #cameraY = cameraY+1
+    
     for t_x, t_y, tile_image in world.tiles():
-        screen.blit(tile_image, (t_x * tile_width, t_y * tile_height))
+        screen.blit(tile_image, (t_x * tile_width - cameraX, t_y * tile_height + cameraY))
 
     # draw the player (yellow box is player place-holder for now)
-    screen.blit(player.image, (player.x,player.y))    
+    screen.blit(player.image, (player.x - cameraX ,player.y + cameraY ))    
     
     pygame.display.flip()
