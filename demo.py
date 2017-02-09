@@ -20,10 +20,11 @@ t_y = 0
 x = 10
 y = 10
 vx = 0
-vy = 0
+vy = 2
 cameraX=0
 cameraY=0
-ACCEL = 0.001
+ACCEL = 0.5
+GRAV = 3
 tile_width = 32
 tile_height = 32
 frame_time = pygame.time.get_ticks()
@@ -37,6 +38,9 @@ floors = tiled_map.get_layer_by_name("Ground")
 stairs = tiled_map.get_layer_by_name("Stairs")
 floorBoxes = list()
 stairBoxes = list()
+player.box = Rect(player.x, player.y, player.width, player.height)
+isgrounded = False
+
 for obj in floors:
     box = Rect(obj.points[0][0], obj.points[0][1], obj.points[1][0] - obj.points[0][0], obj.points[3][1] - obj.points[0][1])
     floorBoxes.append(box)
@@ -47,24 +51,49 @@ for obj in stairs:
 while True:
     # time of current frame
     start_time = pygame.time.get_ticks()
-    
+    #print player.box.y
     # get user events
     pygame.event.pump()
     for evt in pygame.event.get():
         if evt.type == pygame.QUIT or evt.type == pygame.KEYDOWN and evt.key == pygame.K_ESCAPE:
             pygame.quit()
             sys.exit()
+            
+    isgrounded=False
+    for fbox in floorBoxes:
+        if player.box.colliderect(fbox):
+            isgrounded=True
 
-    #move the camera
+
+    player.box.y = player.box.y + vy
+    player.box.x = player.box.x + vx
+    
+    if vx > 0:
+        vx = vx * ACCEL * dt
+    if vx < 0:
+        vx = vx * ACCEL * dt
+
+    
+    
+    if isgrounded:
+        vy = 0
+    vy = vy + GRAV * dt
+    
+        #move the camera
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
-        cameraX = cameraX - 5 * 32 * dt
+        vx = -1
+        #cameraX = cameraX - 5 * 32 * dt
     if keys[pygame.K_RIGHT]:
-        cameraX = cameraX + 5 * 32 * dt
+        vx = 1
+        #cameraX = cameraX + 5 * 32 * dt
     if keys[pygame.K_UP]:
-        cameraY = cameraY + 5 * 32 * dt
-    if keys[pygame.K_DOWN]:
-        cameraY = cameraY - 5 * 32 * dt
+        vy = -.1
+        #cameraY = cameraY + 5 * 32 * dt
+    #if keys[pygame.K_DOWN]:
+        #cameraY = cameraY - 5 * 32 * dt
+    cameraX = player.box.x - 1280/2
+    cameraY = -player.box.y + 640/2
         
     # we need to investiage this chunk
     '''delay = (pygame.time.get_ticks() - frame_time)
@@ -87,7 +116,7 @@ while True:
         screen.blit(tile_image, (t_x * tile_width - cameraX, t_y * tile_height + cameraY))
 
     # draw the player (yellow box is player place-holder for now)
-    screen.blit(player.image, (player.x - cameraX, player.y + cameraY ))    
+    screen.blit(player.image, (player.box.x - cameraX, player.box.y + cameraY ))    
     
     pygame.display.flip()
     dt = (start_time - previousFrameTime) / 1000.0
