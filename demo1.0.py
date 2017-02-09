@@ -75,20 +75,23 @@ while True:
         player.x = player.x + 0.001 * delay
         if player.x > 0:
             player.x = 0
+            """
     if inputY != 0:
-        player.y = player.y - inputY * SPEED
-    elif player.y < 416:
-        player.y = player.y + 50 * delay
-        if player.y > 416:
-            player.x = 416
-   
+        player.y = player.y - 0.1 * delay
+        if player.y < 345:
+            print player.y
+            player.y = player.y +  delay
+            if player.y > 384:
+                inputY = 0
+                player.y = 384
+    print player.y
     
-
+"""
            
     # simulation stuff goes here
 
 
-    print player.y
+
     #print player.name # this is how you print out attributes of objects from tmx file
 
     # draw the background
@@ -108,3 +111,4 @@ while True:
     screen.blit(player.image, (player.x - cameraX ,player.y + cameraY ))    
     
     pygame.display.flip()
+
