@@ -27,30 +27,38 @@ tile_width = 32
 tile_height = 32
 frame_time = pygame.time.get_ticks()
 player = tiled_map.get_object_by_name("player_1")
-
+main_floor = tiled_map.get_object_by_name("main_floor")
+world = tiled_map.get_layer_by_name("world") #this was in main loop, nooooooooooooooooo, but I have saved it!
+dt = 0.0 # delta time
+previousFrameTime = 0.0
 while True:
 
     # time of current frame
-    frame_time = pygame.time.get_ticks()
+    start_time = pygame.time.get_ticks()
     
     # get user events
     pygame.event.pump()
     for evt in pygame.event.get():
-        if evt.type == pygame.QUIT:
+        if evt.type == pygame.QUIT or evt.type == pygame.KEYDOWN and evt.key == pygame.K_ESCAPE:
             pygame.quit()
             sys.exit()
-        elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_ESCAPE:
-            pygame.quit()
-            sys.exit()
-        elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_RIGHT:
-            cameraX = cameraX + 32
-        elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_LEFT:
-            cameraX = cameraX - 32   
+
+    #move the camera
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        cameraX = cameraX - 32 * dt
+    if keys[pygame.K_RIGHT]:
+        cameraX = cameraX + 32 * dt
+    if keys[pygame.K_UP]:
+        cameraY = cameraY + 32 * dt
+    if keys[pygame.K_DOWN]:
+        cameraY = cameraY - 32 * dt
+        
     # we need to investiage this chunk
-    delay = (pygame.time.get_ticks() - frame_time)
+    '''delay = (pygame.time.get_ticks() - frame_time)
     if (delay == 0):
         delay = 1
-            
+    '''     
     # simulation stuff goes here 
     #print player.name # this is how you print out attributes of objects from tmx file
     
@@ -58,7 +66,6 @@ while True:
     screen.fill( (135, 206 , 250) )
 
     # draw all tiles in world layer to screen and flip
-    world = tiled_map.get_layer_by_name("world")
 
     # camera controls
     #cameraX = cameraX+1
@@ -68,6 +75,8 @@ while True:
         screen.blit(tile_image, (t_x * tile_width - cameraX, t_y * tile_height + cameraY))
 
     # draw the player (yellow box is player place-holder for now)
-    screen.blit(player.image, (player.x - cameraX ,player.y + cameraY ))    
+    screen.blit(player.image, (player.x - cameraX, player.y + cameraY ))    
     
     pygame.display.flip()
+    dt = (start_time - previousFrameTime) / 1000.0
+    previousFrameTime = start_time
