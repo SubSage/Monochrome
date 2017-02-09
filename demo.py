@@ -32,6 +32,7 @@ player = tiled_map.get_object_by_name("player_1")
 #main_floor = tiled_map.get_object_by_name("main_floor")
 world = tiled_map.get_layer_by_name("world") #this was in main loop, nooooooooooooooooo, but I have saved it!
 dt = 0.0 # delta time
+delay=0.0
 previousFrameTime = 0.0
 floor1 = tiled_map.get_object_by_name("floor1")
 floors = tiled_map.get_layer_by_name("Ground")
@@ -40,6 +41,7 @@ floorBoxes = list()
 stairBoxes = list()
 player.box = Rect(player.x, player.y, player.width, player.height)
 isgrounded = False
+isgroundedStair = False
 
 for obj in floors:
     box = Rect(obj.points[0][0], obj.points[0][1], obj.points[1][0] - obj.points[0][0], obj.points[3][1] - obj.points[0][1])
@@ -50,7 +52,8 @@ for obj in stairs:
     
 while True:
     # time of current frame
-    start_time = pygame.time.get_ticks()
+    #print pygame.time.get_ticks()
+    
     #print player.box.y
     # get user events
     pygame.event.pump()
@@ -63,7 +66,11 @@ while True:
     for fbox in floorBoxes:
         if player.box.colliderect(fbox):
             isgrounded=True
-
+            
+    isgroundedStair=False
+    for fbox in floorBoxes:
+        if player.box.colliderect(fbox):
+            isgroundedStair=True
 
     player.box.y = player.box.y + vy
     player.box.x = player.box.x + vx
@@ -77,7 +84,10 @@ while True:
     
     if isgrounded:
         vy = 0
-    vy = vy + GRAV * dt
+    if isgroundedStair:
+        vy = 0
+    else:
+        vy = vy + GRAV * dt
     
         #move the camera
     keys = pygame.key.get_pressed()
@@ -96,10 +106,13 @@ while True:
     cameraY = -player.box.y + 640/2
         
     # we need to investiage this chunk
-    '''delay = (pygame.time.get_ticks() - frame_time)
+    start_time = pygame.time.get_ticks()
+    
+    delay = (pygame.time.get_ticks() - start_time)
+    '''
     if (delay == 0):
         delay = 1
-    '''     
+    '''  
     # simulation stuff goes here 
     #print player.name # this is how you print out attributes of objects from tmx file
     
