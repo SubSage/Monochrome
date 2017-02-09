@@ -5,6 +5,7 @@ import pytmx
 from utils import vector2
 from utils import sprite2
 from pytmx.util_pygame import load_pygame
+from pygame import Rect
 
 # setup goes here
 pygame.init()
@@ -27,12 +28,23 @@ tile_width = 32
 tile_height = 32
 frame_time = pygame.time.get_ticks()
 player = tiled_map.get_object_by_name("player_1")
-main_floor = tiled_map.get_object_by_name("main_floor")
+#main_floor = tiled_map.get_object_by_name("main_floor")
 world = tiled_map.get_layer_by_name("world") #this was in main loop, nooooooooooooooooo, but I have saved it!
 dt = 0.0 # delta time
 previousFrameTime = 0.0
+floor1 = tiled_map.get_object_by_name("floor1")
+floors = tiled_map.get_layer_by_name("Ground")
+stairs = tiled_map.get_layer_by_name("Stairs")
+floorBoxes = list()
+stairBoxes = list()
+for obj in floors:
+    box = Rect(obj.points[0][0], obj.points[0][1], obj.points[1][0] - obj.points[0][0], obj.points[3][1] - obj.points[0][1])
+    floorBoxes.append(box)
+for obj in stairs:
+    box = Rect(obj.points[0][0], obj.points[0][1], obj.points[1][0] - obj.points[0][0], obj.points[3][1] - obj.points[0][1])
+    stairBoxes.append(box)
+    
 while True:
-
     # time of current frame
     start_time = pygame.time.get_ticks()
     
@@ -46,13 +58,13 @@ while True:
     #move the camera
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
-        cameraX = cameraX - 32 * dt
+        cameraX = cameraX - 5 * 32 * dt
     if keys[pygame.K_RIGHT]:
-        cameraX = cameraX + 32 * dt
+        cameraX = cameraX + 5 * 32 * dt
     if keys[pygame.K_UP]:
-        cameraY = cameraY + 32 * dt
+        cameraY = cameraY + 5 * 32 * dt
     if keys[pygame.K_DOWN]:
-        cameraY = cameraY - 32 * dt
+        cameraY = cameraY - 5 * 32 * dt
         
     # we need to investiage this chunk
     '''delay = (pygame.time.get_ticks() - frame_time)
