@@ -1,0 +1,1 @@
+You can delete the file once you've pushed your files to the repository.
