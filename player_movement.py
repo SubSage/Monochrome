@@ -12,8 +12,11 @@ class player_movement:
         keys = pygame.key.get_pressed()
         inputX = 0
         inputY = 0
-        DECCELERATION = 10.5
+        DECCELERATION = 12.5
         JUMPSPEED = 4
+        PUNCHING = False
+        last_punch = 0
+        punch_delay = 750.00
 
         # this reads the players input
         if ((keys[pygame.K_a])|(keys[pygame.K_LEFT])):
@@ -24,6 +27,12 @@ class player_movement:
             inputY -= 1
         if ((keys[pygame.K_s])|(keys[pygame.K_DOWN])):
             inputY += 1
+            
+        if((pygame.time.get_ticks() - last_punch) > punch_delay):
+            if ((keys[pygame.K_SPACE])|(keys[pygame.K_z])):
+                last_punch = pygame.time.get_ticks()
+                PUNCHING = True
+            
             
         #this makes the player instantly re-accelerate on the ground
         if ((inputX != 0) & (isgrounded) ):
@@ -76,7 +85,7 @@ class player_movement:
         
 
         #print v.y
-        return vx,vy
+        return vx,vy, PUNCHING
 
     def check_ground(self, ground_blocks, last_player_x, last_player_y, player_width, player_height, vx, vy, tile_height, tile_width , SPEED, dt):
         isgrounded = False
