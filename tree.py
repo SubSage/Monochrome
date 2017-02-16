@@ -16,7 +16,7 @@ class tree:
     last_root_down = 0
 
     root_down_height = 0
-    root_warn_height = 2050
+    root_warn_height = 2100
     root_attack_height = 1892
 
     root_width = 0
