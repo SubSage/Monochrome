@@ -9,7 +9,6 @@ from pygame import Rect
 from player_movement import player_movement
 from tree import tree
 import random
-from sprite import sprite_2
 # setup goes here
 pygame.init()
 tile_width = 128
@@ -32,7 +31,7 @@ ACCEL = 0.5
 GRAV = 15.000
 SPEED = 1.8
 frame_time = pygame.time.get_ticks()
-player_obj = tiled_map.get_object_by_name("player_1")
+player = tiled_map.get_object_by_name("player_1")
 boss_heart = tiled_map.get_object_by_name("heart")
 #main_floor = tiled_map.get_object_by_name("main_floor")
 #world = tiled_map.get_layer_by_name("world") #this was in main loop, nooooooooooooooooo, but I have saved it!
@@ -51,11 +50,11 @@ boss_hitboxes = tiled_map.get_layer_by_name("hitboxes")
 boss_hitboxes_rect = list()
 floorBoxes = list()
 stairBoxes = list()
-player_obj.box = Rect(player_obj.x, player_obj.y, player_obj.width, player_obj.height)
+player.box = Rect(player.x, player.y, player.width, player.height)
 isgrounded = False
 isgroundedStair = False
-player_height = player_obj.height
-player_width = player_obj.width
+player_height = player.height
+player_width = player.width
 player_movement = player_movement()
 roots = boss_hitboxes = tiled_map.get_layer_by_name("roots")
 root_width = 128
@@ -65,9 +64,11 @@ boss_beaten = False
 death_screen = pygame.image.load( "death_screen.jpg" ).convert()
 win_screen = pygame.image.load( "win_screen.jpg" ).convert()
 PUNCHING = False
-player_death_delay = 1000.00
-player_death_time = 0.0
-player_sprite = sprite_2(player_obj.image, player_obj.x, player_obj.y, player_obj.height, player_obj.width)
+#frame stuff for animation
+frame = 0
+frame_timer = 0
+FRAME_TIME = 100
+FRAME_CT = 6
 '''
 for obj in floors:
     box = Rect(obj.points[0][0], obj.points[0][1], obj.points[1][0] - obj.points[0][0], obj.points[3][1] - obj.points[0][1])
@@ -121,14 +122,8 @@ while True:
             #                               #
             # Check for ground collisions   #
             #                               #
-            player_sprite.x, player_sprite.y, vx, vy, isgrounded = player_movement.check_ground(ground_blocks, player_sprite.x, player_sprite.y, player_width, player_height, vx, vy, tile_height, tile_width, SPEED, dt)
+            player.x, player.y, vx, vy, isgrounded = player_movement.check_ground(ground_blocks, player.x, player.y, player_width, player_height, vx, vy, tile_height, tile_width, SPEED, dt)
 
-            #                    #
-            # update player mask #
-            #                    #
-            player_sprite.mask = pygame.mask.from_surface(player_sprite.image)
-            player_sprite.rect = pygame.Rect(player_sprite.x,player_sprite.y,player_sprite.width,player_sprite.height)
-            
             #                   #
             # update tree stuff #
             #                   #
@@ -138,24 +133,21 @@ while True:
             # check if player gets hit by roots #
             #                                   #
             if (tree_boss.root_attacking):
-                player_alive = tree_boss.root_collision(player_sprite, player_sprite.width, player_sprite.height)
-                #tree_boss.pp_root_collision(player_sprite)
-                if(not player_alive):
-                     player_death_time = pygame.time.get_ticks()
+                player_alive = tree_boss.root_collision(player, player_width, player_height)
 
             #                                   #
             # check if player gets hits heart   #
             #                                   #
             
             if(PUNCHING):
-                tree_boss.check_heart(player_sprite, player_sprite.width, player_sprite.height)
+                tree_boss.check_heart(player, player_width, player_height)
 
             if(tree_boss.hp < 1):
                 boss_beaten = True
                 
             #move the camera  
-            cameraX = player_sprite.x - 1280/2
-            cameraY = -player_sprite.y + 640/2
+            cameraX = player.x - 1280/2
+            cameraY = -player.y + 640/2
 
             # draw the background
             screen.fill( (48, 24 , 96) )
@@ -173,15 +165,24 @@ while True:
                 screen.blit(root.image, (root.x - cameraX, root.y + cameraY))
 
             # draw the player
-            screen.blit(player_sprite.image, (player_sprite.x - cameraX, player_sprite.y + cameraY ))    
-    
+            #img = pygame.image.load( "ryu-640.png" ).convert_alpha()
+            #clip = pygame.Rect( MARGIN+IMG_W*frame, 0, IMG_W, 151 )
+            '''
+            if frame != 0:
+                 if frame_timer > FRAME_TIME:
+                      frame_timer -= FRAME_TIME
+                      frame = (frame + 1) % FRAME_CT
+                 frame_timer += delta
+            '''
+            #screen.blit(img, (22,0), area=clip, special_flags=pygame.BLEND_RGBA_MIN )
+            screen.blit(player.image, (player.x - cameraX, player.y + cameraY ))    
+                        
             pygame.display.flip()
             dt = (start_time - previousFrameTime) / 1000.0
             previousFrameTime = start_time
             if (dt > 0.2):
                 dt = 0.2
     else:
-     if ((pygame.time.get_ticks() - player_death_time) > player_death_delay):
-          screen.blit(death_screen, (0,0))
-          pygame.display.flip()
+        screen.blit(death_screen, (0,0))
+        pygame.display.flip()
         
