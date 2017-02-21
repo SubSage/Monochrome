@@ -3,6 +3,7 @@ import pygame
 import sys
 from utils import vector2
 import random
+from sprite import sprite_2
 
 class tree:
     thing = "thing"
@@ -14,24 +15,29 @@ class tree:
     last_root_warn = 0
     last_root_attack = 0
     last_root_down = 0
+    last_root_height_reached = 0
+    
 
-    root_down_height = 0
+    root_down_height = 2100
     root_warn_height = 2100
     root_attack_height = 1892
 
-    root_width = 0
+    root_width = 128
     root_height = 256
 
     roots = list()
+    root_sprites = list()
     heart = list()
-    root_attacking = False
 
-    hp = 300
+    hp = 50
+    root_speed = 10
 
-    # these are the different states that the roos can be in
-    down = True
+    # these are the different states that the roots can be in
+    down = False
     warn = False
     attack = False
+    root_height_reached = True
+    root_attacking = False
     
     def __init__(self, _roots, _root_width, _heart):
         flop = 0
@@ -57,16 +63,16 @@ class tree:
                 flop = 0
             root.x = (((count * 5) + num) * 128)
 
+        self.roots_to_sprites()
+
     def update(self,dt):
         cats = "cats"
-        root_attack = False
-        if ( ((pygame.time.get_ticks() - self.last_root_down) > self.root_warn_delay) & ( (self.down) & (not self.warn) & (not self.attack)) ):
-            self.root_warn()
+        #root_attack = False
+        if ( ((pygame.time.get_ticks() - self.last_root_down) > self.root_attack_delay) & (self.down | self.attack) ):
+            #self.root_warn()
+            self.root_attack(dt)
 
-        elif ( ((pygame.time.get_ticks() - self.last_root_warn) > self.root_attack_delay) & ((not self.down) & (self.warn) & (not self.attack)) ):
-            self.root_attack()
-
-        elif ( ((pygame.time.get_ticks() - self.last_root_attack) > self.root_down_delay) & ((not self.down) & (not self.warn) & (self.attack)) ):
+        elif ( ((pygame.time.get_ticks() - self.last_root_height_reached) > self.root_down_delay) & (self.root_height_reached) ):
             self.root_down()
         
         return self.root_attacking
@@ -81,17 +87,27 @@ class tree:
             root.y = self.root_warn_height
         self.root_attacking = False
         return
-
-    def root_attack(self):
+    
+    def root_attack(self,dt):
         self.last_root_attack = pygame.time.get_ticks()
         self.down = False
         self.warn = False
         self.attack = True
         #print "im attacking you"
-        for root in self.roots:    
-            root.y = self.root_attack_height
-
         self.root_attacking = True
+
+        root_level = (self.roots[0].y - (self.root_speed * dt))
+
+        if (root_level < self.root_attack_height):
+            root_level = self.root_attack_height
+            self.root_height_reached = True
+            self.last_root_height_reached = pygame.time.get_ticks()
+
+        for root in self.roots:    
+            root.y = root_level
+            root.mask = pygame.mask.from_surface(root.image)
+            root.rect = pygame.Rect(root.x,root.y,root.width,root.height)
+
         return
 
     def root_down(self):
@@ -99,6 +115,7 @@ class tree:
         self.down = True
         self.warn = False
         self.attack = False
+        self.root_height_reached = False
         flop = 0
         num = 0
         index = 0
@@ -127,11 +144,50 @@ class tree:
         for root in self.roots:
             if ( ((root.x) < (player.x) < (root.x + root.width)) | ( (root.x) < (player.x + player_width) < (root.x + root.width) ) ):
                 if ( ((root.y) < (player.y) < (root.y + root.height)) | ( (root.y) < (player.y + player_height) < (root.y + root.height) ) ):
-                    hit = True
+                    tmp1 = pygame.Surface( (player.width,player.height), pygame.SRCALPHA )
+                    tmp1.blit( root.image, (0,0))
+                    m1 = pygame.mask.from_surface( tmp1 )
+
+                    tmp2 = pygame.Surface( (root.width,root.height), pygame.SRCALPHA )
+                    tmp2.blit( root.image, (0,0))
+                    m2 = pygame.mask.from_surface( tmp2 )
+
+                    if m1.overlap( m2, (int(math.floor(root.x - player.x)), int(math.floor(root.y - player.y))) ) is not None:
+                        #cat = "cat"
+                        #print "BOOM!"
+                        hit = True
+                    #else:
+                        #print "..."
         if (hit):
             return False
         else:
             return True
+    '''
+    def pp_root_collision(self,player):
+        
+        p_mask = pygame.Rect(player.x, player.y, player.width, player.height)
+        tmp1 = pygame.Surface( (player.width,player.height), pygame.SRCALPHA )
+        tmp1.blit( player.image, (player.x,player.y), area=p_mask )
+        m1 = pygame.mask.from_surface( tmp1 )
+        
+        for root in self.root_sprites:
+            r_mask = pygame.Rect(root.x, root.y, root.width, root.height)
+            tmp2 = pygame.Surface( (root.width,root.height), pygame.SRCALPHA )
+            tmp2.blit( root.image, (root.x,root.y), area=r_mask )
+            m2 = pygame.mask.from_surface( tmp2 )
+            
+            #if m1( m2, ((root.x - player.x), (root.y-player.y)) ) is not None:
+            if pygame.( m2, (int(math.floor(root.x - player.x)),int(math.floor(root.y - player.y))) ) is not None:
+                print "collision"
+        
+        for root in self.root_sprites:
+            if ( pygame.sprite.spritecollide(player, self.root_sprites, False, pygame.sprite.collide_mask) )is not None:
+                print "collide"
+            
+        return
+    '''
+                
+        
 
     def check_heart(self, player, player_width, player_height):
         hit = False
@@ -150,6 +206,14 @@ class tree:
         else:
             return
             #print "miss"
-            
+    
+    def roots_to_sprites(self):
+        root_sprites = list()
         
+        for root in self.roots:
+            tmp_sprite = sprite_2(root.image,root.x,root.y,root.height,root.width)
+            root_sprites.append(tmp_sprite)
+
+        self.root_sprites = root_sprites
+        return     
         

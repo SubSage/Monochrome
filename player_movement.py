@@ -12,7 +12,7 @@ class player_movement:
         keys = pygame.key.get_pressed()
         inputX = 0
         inputY = 0
-        DECCELERATION = 12.5
+        DECCELERATION = 40.0
         JUMPSPEED = 4
         PUNCHING = False
         last_punch = 0
