@@ -53,8 +53,8 @@ stairBoxes = list()
 player.box = Rect(player.x, player.y, player.width, player.height)
 isgrounded = False
 isgroundedStair = False
-player_height = player.height
-player_width = player.width
+player_height = 155
+player_width = 158
 player_movement = player_movement()
 roots = boss_hitboxes = tiled_map.get_layer_by_name("roots")
 root_width = 128
@@ -65,10 +65,12 @@ death_screen = pygame.image.load( "death_screen.jpg" ).convert()
 win_screen = pygame.image.load( "win_screen.jpg" ).convert()
 PUNCHING = False
 #frame stuff for animation
+flippic = False
 frame = 0
 frame_timer = 0
-FRAME_TIME = 100
+FRAME_TIME = .10
 FRAME_CT = 6
+Aheight = 0
 '''
 for obj in floors:
     box = Rect(obj.points[0][0], obj.points[0][1], obj.points[1][0] - obj.points[0][0], obj.points[3][1] - obj.points[0][1])
@@ -118,7 +120,22 @@ while True:
             # update player speed   #
             #                       #
             vx,vy, PUNCHING = player_movement.update_velocities(SPEED, dt, GRAV, vx, vy, isgrounded )
-
+                        #sprite controls
+            
+            mkeys = pygame.key.get_pressed()
+            if ((mkeys[pygame.K_a])|(mkeys[pygame.K_LEFT])):
+                 flippic = True
+                 if frame == 0:
+                      frame = 1
+            if ((mkeys[pygame.K_d])|(mkeys[pygame.K_RIGHT])):
+                 flippic =False
+                 if frame == 0:
+                      frame = 1
+            if ((mkeys[pygame.K_w])|(mkeys[pygame.K_UP])):
+                 None
+            if ((mkeys[pygame.K_z])|(mkeys[pygame.K_SPACE])):
+                 None
+             
             #                               #
             # Check for ground collisions   #
             #                               #
@@ -132,8 +149,8 @@ while True:
             #                                   #
             # check if player gets hit by roots #
             #                                   #
-            if (tree_boss.root_attacking):
-                player_alive = tree_boss.root_collision(player, player_width, player_height)
+            #if (tree_boss.root_attacking):
+             #   player_alive = tree_boss.root_collision(player, player_width, player_height)
 
             #                                   #
             # check if player gets hits heart   #
@@ -167,16 +184,26 @@ while True:
             # draw the player
             #img = pygame.image.load( "ryu-640.png" ).convert_alpha()
             #clip = pygame.Rect( MARGIN+IMG_W*frame, 0, IMG_W, 151 )
-            '''
+            
             if frame != 0:
                  if frame_timer > FRAME_TIME:
                       frame_timer -= FRAME_TIME
                       frame = (frame + 1) % FRAME_CT
-                 frame_timer += delta
-            '''
+                 frame_timer += dt
+            
+            img = pygame.image.load( "HMCF.png" ).convert_alpha()
+            clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )            
+            
             #screen.blit(img, (22,0), area=clip, special_flags=pygame.BLEND_RGBA_MIN )
-            screen.blit(player.image, (player.x - cameraX, player.y + cameraY ))    
-                        
+            #screen.blit(player.image, (player.x - cameraX, player.y + cameraY ))    
+            if flippic == False:
+                 screen.blit(img, (player.x - cameraX, player.y + cameraY ),area = clip )
+                 print isgrounded
+
+            elif flippic == True:
+                 screen.blit(pygame.transform.flip(img, True, False), (player.x - cameraX, player.y + cameraY ),area = clip)
+                 
+                                                
             pygame.display.flip()
             dt = (start_time - previousFrameTime) / 1000.0
             previousFrameTime = start_time
