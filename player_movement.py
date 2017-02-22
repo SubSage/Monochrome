@@ -46,7 +46,7 @@ class player_movement:
             DECCELERATION = (DECCELERATION/16)
 
         # deccelerate normally while in on the ground
-
+        '''
         if (vx > 0) & (inputX == 0):
             vx = vx - (DECCELERATION * dt)
             if vx < 0:
@@ -55,7 +55,10 @@ class player_movement:
             vx = vx + (DECCELERATION * dt)
             if vx > 0:
                 vx = 0
-
+        '''
+        if (inputX == 0):
+            vx = 0
+        
         '''
         if (isgrounded):
             v.y = 0

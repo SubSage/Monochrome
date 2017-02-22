@@ -10,7 +10,7 @@ class tree:
 
     root_warn_delay = 1000.00
     root_attack_delay = 625.00
-    root_down_delay = 2000.00
+    root_down_delay = 500.00
 
     last_root_warn = 0
     last_root_attack = 0
@@ -30,12 +30,13 @@ class tree:
     heart = list()
 
     hp = 50
-    root_speed = 10
+    root_speed = 40
 
     # these are the different states that the roots can be in
     down = False
     warn = False
     attack = False
+    going_up = False
     root_height_reached = True
     root_attacking = False
     
@@ -68,13 +69,14 @@ class tree:
     def update(self,dt):
         cats = "cats"
         #root_attack = False
-        if ( ((pygame.time.get_ticks() - self.last_root_down) > self.root_attack_delay) & (self.down | self.attack) ):
+        if ( ((pygame.time.get_ticks() - self.last_root_down) > self.root_attack_delay) & (self.down | self.going_up) ):
             #self.root_warn()
             self.root_attack(dt)
 
         elif ( ((pygame.time.get_ticks() - self.last_root_height_reached) > self.root_down_delay) & (self.root_height_reached) ):
             self.root_down()
-        
+
+        print self.root_height_reached
         return self.root_attacking
 
     def root_warn(self):
@@ -93,6 +95,7 @@ class tree:
         self.down = False
         self.warn = False
         self.attack = True
+        self.going_up = True
         #print "im attacking you"
         self.root_attacking = True
 
@@ -102,6 +105,7 @@ class tree:
             root_level = self.root_attack_height
             self.root_height_reached = True
             self.last_root_height_reached = pygame.time.get_ticks()
+            self.going_up = False
 
         for root in self.roots:    
             root.y = root_level

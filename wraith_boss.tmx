@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="128" tileheight="128" nextobjectid="22">
+ <tileset firstgid="1" name="tree_temp" tilewidth="128" tileheight="128" tilecount="176" columns="16">
+  <image source="Art Assets/Erik/Images/PNG/tree_temp.png" width="2100" height="1500"/>
+ </tileset>
+ <tileset firstgid="177" name="treewithaheart02" tilewidth="128" tileheight="128" tilecount="42" columns="7">
+  <image source="Art Assets/Erik/Images/JPEG/treewithaheart02.jpg" width="1008" height="792"/>
+ </tileset>
+ <tileset firstgid="219" name="patformkenney-128-4x39" tilewidth="128" tileheight="128" tilecount="156" columns="4">
+  <image source="patformkenney-128-4x39.png" width="512" height="4992"/>
+ </tileset>
+ <tileset firstgid="375" name="guy" tilewidth="64" tileheight="128" tilecount="1" columns="1">
+  <image source="Art Assets/Elizardo/guy.png" width="64" height="128"/>
+ </tileset>
+ <tileset firstgid="376" name="root" tilewidth="128" tileheight="256" tilecount="1" columns="1">
+  <image source="Art Assets/Elizardo/root.png" width="128" height="256"/>
+ </tileset>
+ <tileset firstgid="377" name="undergrounds" tilewidth="128" tileheight="128" tilecount="1" columns="1">
+  <image source="Art Assets/Ame/Tiles/undergrounds.jpg" width="128" height="128"/>
+ </tileset>
+ <layer name="dirt" width="25" height="25">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
+377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
+377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
+377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
+377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
+377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
+377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
+377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
+377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377
+</data>
+ </layer>
+ <objectgroup name="ground">
+  <object id="8" name="tree_floor" x="-4" y="2048" width="3204" height="381.576"/>
+ </objectgroup>
+ <objectgroup name="roots">
+  <object id="11" name="root_1" gid="376" x="0" y="2944" width="128" height="256"/>
+  <object id="12" name="root_2" gid="376" x="128" y="2944" width="128" height="256"/>
+  <object id="13" name="root_3" gid="376" x="256" y="2944" width="128" height="256"/>
+  <object id="14" name="root_5" gid="376" x="512" y="2944" width="128" height="256"/>
+  <object id="15" name="root_4" gid="376" x="384" y="2944" width="128" height="256"/>
+  <object id="17" name="root_6" gid="376" x="640" y="2944" width="128" height="256"/>
+  <object id="18" name="root_7" gid="376" x="768" y="2944" width="128" height="256"/>
+  <object id="19" name="root_8" gid="376" x="896" y="2944" width="128" height="256"/>
+  <object id="20" name="root_9" gid="376" x="1024" y="2944" width="128" height="256"/>
+  <object id="21" name="root_10" gid="376" x="1152" y="2944" width="128" height="256"/>
+ </objectgroup>
+ <objectgroup name="player">
+  <object id="10" name="player_1" gid="375" x="156.727" y="2010.31" width="64" height="128"/>
+ </objectgroup>
+</map>

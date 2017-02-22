@@ -64,6 +64,8 @@ boss_beaten = False
 death_screen = pygame.image.load( "death_screen.jpg" ).convert()
 win_screen = pygame.image.load( "win_screen.jpg" ).convert()
 PUNCHING = False
+death_time = 0
+death_delay = 1000.00
 #frame stuff for animation
 flippic = False
 frame = 0
@@ -158,7 +160,9 @@ while True:
             #                                   #
             if (tree_boss.root_attacking):
                  player_alive = tree_boss.root_collision(player, player_width, player_height, clip, player_image)
-
+                 if(not player_alive):
+                      death_time = pygame.time.get_ticks()
+                      
             #                                   #
             # check if player gets hits heart   #
             #                                   #
@@ -220,6 +224,8 @@ while True:
             if (dt > 0.2):
                 dt = 0.2
     else:
-        screen.blit(death_screen, (0,0))
-        pygame.display.flip()
+
+        if((pygame.time.get_ticks()) > (death_time + death_delay)):
+             screen.blit(death_screen, (0,0))
+             pygame.display.flip()
         
