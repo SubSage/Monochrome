@@ -72,7 +72,7 @@ FRAME_TIME = .10
 FRAME_CT = 6
 Aheight = 0
 
-player_image = pygame.image.load( "HMCF.png" ).convert_alpha()
+player_image = pygame.image.load( "HMCF2.png" ).convert_alpha()
 clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )
 '''
 for obj in floors:
@@ -129,15 +129,19 @@ while True:
             if ((mkeys[pygame.K_a])|(mkeys[pygame.K_LEFT])):
                  flippic = True
                  if frame == 0:
+                      Aheight = 0
                       frame = 1
             if ((mkeys[pygame.K_d])|(mkeys[pygame.K_RIGHT])):
                  flippic =False
                  if frame == 0:
+                      Aheight = 0
                       frame = 1
             if ((mkeys[pygame.K_w])|(mkeys[pygame.K_UP])):
                  None
             if ((mkeys[pygame.K_z])|(mkeys[pygame.K_SPACE])):
-                 None
+                 if frame == 0:
+                      Aheight = 3
+                      frame = 1
              
             #                               #
             # Check for ground collisions   #
@@ -206,7 +210,7 @@ while True:
                  #print isgrounded
                  player_image = img
 
-            elif flippic == True:
+            else:
                  screen.blit(pygame.transform.flip(img, True, False), (player.x - cameraX, player.y + cameraY ),area = clip)
                  player_image = pygame.transform.flip(img, True, False)
                                                 
