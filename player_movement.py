@@ -9,11 +9,14 @@ class player_movement:
 
     def update_velocities(self, SPEED, dt, GRAV, vx, vy, isgrounded):
         #v = vector2((0,0))
+
+        # pssst hey this variable changes the player speed is you wan to hard code it
+        SPEED = 17.0
         keys = pygame.key.get_pressed()
         inputX = 0
         inputY = 0
         DECCELERATION = 40.0
-        JUMPSPEED = 4
+        JUMPSPEED = 12.0
         PUNCHING = False
         last_punch = 0
         punch_delay = 750.00
@@ -33,7 +36,7 @@ class player_movement:
                 last_punch = pygame.time.get_ticks()
                 PUNCHING = True
             
-            
+        #print inputX
         #this makes the player instantly re-accelerate on the ground
         if ((inputX != 0) & (isgrounded) ):
             vx = (inputX * SPEED)
@@ -43,15 +46,16 @@ class player_movement:
             DECCELERATION = (DECCELERATION/16)
 
         # deccelerate normally while in on the ground
-        if vx > 0:
-            vx = vx - (DECCELERATION * dt)
 
+        if (vx > 0) & (inputX == 0):
+            vx = vx - (DECCELERATION * dt)
             if vx < 0:
                 vx = 0
-        elif vx < 0:
+        elif (vx < 0 ) & (inputX == 0):
             vx = vx + (DECCELERATION * dt)
             if vx > 0:
                 vx = 0
+
         '''
         if (isgrounded):
             v.y = 0
@@ -62,7 +66,7 @@ class player_movement:
         # this makes the player jump
         if(isgrounded):
             if inputY < 0:
-                vy = inputY * JUMPSPEED
+                vy = (inputY * JUMPSPEED)
 
         # this makes the player jumping mid air
         #if (isgrounded == False):

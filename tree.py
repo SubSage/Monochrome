@@ -139,13 +139,13 @@ class tree:
             self.root_attacking = False
         return
 
-    def root_collision(self, player, player_width, player_height):
+    def root_collision(self, player, player_width, player_height,clip, player_image):
         hit = False
         for root in self.roots:
             if ( ((root.x) < (player.x) < (root.x + root.width)) | ( (root.x) < (player.x + player_width) < (root.x + root.width) ) ):
                 if ( ((root.y) < (player.y) < (root.y + root.height)) | ( (root.y) < (player.y + player_height) < (root.y + root.height) ) ):
-                    tmp1 = pygame.Surface( (player.width,player.height), pygame.SRCALPHA )
-                    tmp1.blit( root.image, (0,0))
+                    tmp1 = pygame.Surface( (player_width,player_height), pygame.SRCALPHA )
+                    tmp1.blit( player_image, (0,0),area = clip)
                     m1 = pygame.mask.from_surface( tmp1 )
 
                     tmp2 = pygame.Surface( (root.width,root.height), pygame.SRCALPHA )

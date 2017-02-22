@@ -71,6 +71,9 @@ frame_timer = 0
 FRAME_TIME = .10
 FRAME_CT = 6
 Aheight = 0
+
+player_image = pygame.image.load( "HMCF.png" ).convert_alpha()
+clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )
 '''
 for obj in floors:
     box = Rect(obj.points[0][0], obj.points[0][1], obj.points[1][0] - obj.points[0][0], obj.points[3][1] - obj.points[0][1])
@@ -149,8 +152,8 @@ while True:
             #                                   #
             # check if player gets hit by roots #
             #                                   #
-            #if (tree_boss.root_attacking):
-             #   player_alive = tree_boss.root_collision(player, player_width, player_height)
+            if (tree_boss.root_attacking):
+                 player_alive = tree_boss.root_collision(player, player_width, player_height, clip, player_image)
 
             #                                   #
             # check if player gets hits heart   #
@@ -200,11 +203,12 @@ while True:
             #print player.y
             if flippic == False:
                  screen.blit(img, (player.x - cameraX, player.y + cameraY ),area = clip )
-                 print isgrounded
+                 #print isgrounded
+                 player_image = img
 
             elif flippic == True:
                  screen.blit(pygame.transform.flip(img, True, False), (player.x - cameraX, player.y + cameraY ),area = clip)
-                 
+                 player_image = pygame.transform.flip(img, True, False)
                                                 
             pygame.display.flip()
             dt = (start_time - previousFrameTime) / 1000.0
