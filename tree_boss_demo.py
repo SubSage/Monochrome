@@ -195,7 +195,9 @@ while True:
             clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )            
             
             #screen.blit(img, (22,0), area=clip, special_flags=pygame.BLEND_RGBA_MIN )
-            #screen.blit(player.image, (player.x - cameraX, player.y + cameraY ))    
+            #screen.blit(player.image, (player.x - cameraX, player.y + cameraY ))
+            #print player.x
+            #print player.y
             if flippic == False:
                  screen.blit(img, (player.x - cameraX, player.y + cameraY ),area = clip )
                  print isgrounded

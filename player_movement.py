@@ -65,8 +65,8 @@ class player_movement:
                 vy = inputY * JUMPSPEED
 
         # this makes the player jumping mid air
-        if (isgrounded == False):
-            vy = (vy + (GRAV * dt))
+        #if (isgrounded == False):
+            #vy = (vy + (GRAV * dt))
         
         '''
         if inputY != 0:
@@ -82,7 +82,7 @@ class player_movement:
                 v.y = 0
         '''
         # calculate for effect of gravity acting on vy
-        
+        vy = (vy + (GRAV * dt))
 
         #print v.y
         return vx,vy, PUNCHING
