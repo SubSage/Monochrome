@@ -10,11 +10,11 @@ from player_movement import player_movement
 from tree import tree
 from wraith import wraith
 import random
-<<<<<<< HEAD
+
 
 # setup goes here
-=======
->>>>>>> origin/master
+
+
 pygame.init()
 tile_width = 128
 tile_height = 128
@@ -100,11 +100,10 @@ while True:
             pygame.quit()
             sys.exit()
 
-<<<<<<< HEAD
+
     # this handles the stages of the game            
-=======
+
     # simulation stuff goes here
->>>>>>> origin/master
     if(player_alive):
         if(boss_beaten):
             screen.blit(win_screen, (0,0))
@@ -173,7 +172,7 @@ while True:
                       Aheight = 3
                       frame = 1
 
-<<<<<<< HEAD
+
             '''
             # THIS IS A CHEEKY DEVELOPER KEY COMMENT THIS OUT BEFORE RELEASE
             if ((mkeys[pygame.K_SEMICOLON])):
@@ -212,9 +211,9 @@ while True:
                  if(wraith_boss.hp < 1):
                      boss_beaten = True
                 
-            #move the camera  
-=======
-            # Check for ground collisions
+            #move the camera
+
+           # Check for ground collisions
             player.x, player.y, vx, vy, isgrounded = player_movement.check_ground(ground_blocks, player.x, player.y, player_width, player_height, vx, vy, tile_height, tile_width, SPEED, dt)
 
             # update tree stuff
@@ -230,7 +229,7 @@ while True:
                 boss_beaten = True
 
             #move the camera
->>>>>>> origin/master
+
             cameraX = player.x - 1280/2
             cameraY = -player.y + 640/2
 
@@ -298,11 +297,13 @@ while True:
             if (dt > 0.2):
                 dt = 0.2
 
-<<<<<<< HEAD
+
 
             #                                   #
             # check if player gets hit by roots #
-            #                                   #
+            #
+            #
+            '''
             if(level == 1):
                  if (tree_boss.root_attacking):
                       player_alive = tree_boss.root_collision(player, player_width, player_height, clip, player_image)
@@ -313,15 +314,17 @@ while True:
                       player_alive = wraith_boss.ice_collision(player, player_width, player_height, clip, player_image)
                       if(not player_alive):
                            death_time = pygame.time.get_ticks()
-               
-=======
+              ''' 
+
             # check if player gets hit by roots
+            '''
             if (tree_boss.root_attacking):
                  player_alive = tree_boss.root_collision(player, player_width, player_height, clip, player_image)
                  if(not player_alive):
                       death_time = pygame.time.get_ticks()
+                      '''
 
->>>>>>> origin/master
+
     else:
 
         if((pygame.time.get_ticks()) > (death_time + death_delay)):
