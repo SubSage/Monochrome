@@ -6,6 +6,8 @@ from utils import vector2
 class player_movement:
     def __init__(self):
         self.thing = "thing"
+        self.last_punch = 0
+        self.punch_delay = 750.00
 
     def update_velocities(self, SPEED, dt, GRAV, vx, vy, isgrounded):
         #v = vector2((0,0))
@@ -18,8 +20,7 @@ class player_movement:
         DECCELERATION = 40.0
         JUMPSPEED = 12.0
         PUNCHING = False
-        last_punch = 0
-        punch_delay = 750.00
+        
 
         # this reads the players input
         if ((keys[pygame.K_a])|(keys[pygame.K_LEFT])):
@@ -31,9 +32,9 @@ class player_movement:
         if ((keys[pygame.K_s])|(keys[pygame.K_DOWN])):
             inputY += 1
             
-        if((pygame.time.get_ticks() - last_punch) > punch_delay):
+        if((pygame.time.get_ticks() - self.last_punch) > self.punch_delay):
             if ((keys[pygame.K_SPACE])|(keys[pygame.K_z])):
-                last_punch = pygame.time.get_ticks()
+                self.last_punch = pygame.time.get_ticks()
                 PUNCHING = True
             
         #print inputX

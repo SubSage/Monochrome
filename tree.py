@@ -29,7 +29,7 @@ class tree:
     root_sprites = list()
     heart = list()
 
-    hp = 50
+    hp = 13
     root_speed = 40
 
     # these are the different states that the roots can be in
@@ -76,7 +76,7 @@ class tree:
         elif ( ((pygame.time.get_ticks() - self.last_root_height_reached) > self.root_down_delay) & (self.root_height_reached) ):
             self.root_down()
 
-        print self.root_height_reached
+        #print self.root_height_reached
         return self.root_attacking
 
     def root_warn(self):
@@ -200,12 +200,12 @@ class tree:
             if ( ((h.x) < (player.x) < (h.x + h.width)) | ( (h.x) < (player.x + player_width) < (h.x + h.width) ) ):
                 if ( ((h.y) < (player.y) < (h.y + h.height)) | ( (h.y) < (player.y + player_height) < (h.y + h.height) ) ):
                     hit = True
-                    #print"hit"
+                    print"hit"
         
         if (hit):
             self.hp = (self.hp - 1)
             #print "hit"
-            #print self.hp
+            print "hp: " , self.hp
             return
         else:
             return

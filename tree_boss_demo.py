@@ -155,13 +155,6 @@ while True:
             #                   #
             root_attack = tree_boss.update(dt)
 
-            #                                   #
-            # check if player gets hit by roots #
-            #                                   #
-            if (tree_boss.root_attacking):
-                 player_alive = tree_boss.root_collision(player, player_width, player_height, clip, player_image)
-                 if(not player_alive):
-                      death_time = pygame.time.get_ticks()
                       
             #                                   #
             # check if player gets hits heart   #
@@ -219,10 +212,21 @@ while True:
                  player_image = pygame.transform.flip(img, True, False)
                                                 
             pygame.display.flip()
+
             dt = (start_time - previousFrameTime) / 1000.0
             previousFrameTime = start_time
             if (dt > 0.2):
                 dt = 0.2
+
+
+            #                                   #
+            # check if player gets hit by roots #
+            #                                   #
+            if (tree_boss.root_attacking):
+                 player_alive = tree_boss.root_collision(player, player_width, player_height, clip, player_image)
+                 if(not player_alive):
+                      death_time = pygame.time.get_ticks()
+               
     else:
 
         if((pygame.time.get_ticks()) > (death_time + death_delay)):
