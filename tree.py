@@ -205,7 +205,7 @@ class tree:
         if (hit):
             self.hp = (self.hp - 1)
             #print "hit"
-            #print "hp: " , self.hp
+            print "tree hp: " , self.hp
             return
         else:
             return

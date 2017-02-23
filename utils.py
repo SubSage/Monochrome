@@ -76,7 +76,7 @@ class sprite2:
             self.position.y = self.radius
             self.velocity.y = -self.velocity.y
 
-            
+    '''      
     def grayscale_image(s): 
     width, height = s.get_size() 
     for x in range(width): 
@@ -86,7 +86,7 @@ class sprite2:
             gs_color = (L, L, L, alpha) 
             s.set_at((x, y), gs_color) 
     return s
-
+    '''
 
     def draw(self, screen):
         # here's where you put the code that draws this sprite's img

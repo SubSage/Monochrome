@@ -8,17 +8,18 @@ class player_movement:
         self.thing = "thing"
         self.last_punch = 0
         self.punch_delay = 750.00
+        self.isgrounded = False
 
     def update_velocities(self, SPEED, dt, GRAV, vx, vy, isgrounded):
         #v = vector2((0,0))
 
         # pssst hey this variable changes the player speed is you wan to hard code it
-        SPEED = 4.5
+        SPEED = 2.2
         keys = pygame.key.get_pressed()
         inputX = 0
         inputY = 0
-        DECCELERATION = 2.2
-        JUMPSPEED = 7.0
+        DECCELERATION = 2.1
+        JUMPSPEED = 4.2
         PUNCHING = False
         
 
@@ -39,11 +40,11 @@ class player_movement:
             
         #print inputX
         #this makes the player instantly re-accelerate on the ground
-        if ((inputX != 0) & (isgrounded) ):
+        if ((inputX != 0) & (self.isgrounded) ):
             vx = (inputX * SPEED)
 
         # decceleration is slower while in midair
-        #elif (isgrounded == False):
+        #elif (self.isgrounded == False):
             #DECCELERATION = (DECCELERATION/16)
 
         # deccelerate normally while in on the ground
@@ -59,7 +60,7 @@ class player_movement:
         '''
         if (inputX == 0):
             vx = 0
-        elif(not isgrounded):
+        elif(not self.isgrounded):
             if (vx > 0):
                 if((vx - (DECCELERATION * dt)) > 0):
                     vx = vx - (DECCELERATION * dt)
@@ -71,21 +72,22 @@ class player_movement:
                 else:
                     vx = 0
                 
-        
+        #print self.isgrounded
         '''
-        if (isgrounded):
+        if (self.isgrounded):
             v.y = 0
             if (inputY < 0):
                 v.y = v.y - 75
         #else:
         '''
         # this makes the player jump
-        if(isgrounded):
+        if(self.isgrounded):
             if inputY < 0:
                 vy = (inputY * JUMPSPEED)
+                self.isgrounded = False
 
         # this makes the player jumping mid air
-        #if (isgrounded == False):
+        #if (self.isgrounded == False):
             #vy = (vy + (GRAV * dt))
         
         '''
@@ -108,7 +110,6 @@ class player_movement:
         return vx,vy, PUNCHING
 
     def check_ground(self, ground_blocks, last_player_x, last_player_y, player_width, player_height, vx, vy, tile_height, tile_width , SPEED, dt):
-        isgrounded = False
         touchingwall = False
         movement_x = (vx * dt)
         movement_y = (vy * dt)
@@ -146,14 +147,14 @@ class player_movement:
                                 if (vy >= 0):
                                     print "corner floor"
                                     current_player_y = (block.y - player_height)
-                                    isgrounded = True
+                                    self.isgrounded = True
                                 else:
                                     print "corner ceiling"
                                     current_player_y = (block.y + block.height)
                         elif (vy > 0):
                             print "touch floor"
                             current_player_y = (block.y - player_height)
-                            isgrounded = True
+                            self.isgrounded = True
                         elif (vy < 0):
                             print "touch ceiling"
                             current_player_y = (block.y + block.height)
@@ -172,7 +173,7 @@ class player_movement:
                             # collision bellow player
                             if (( block.y <= (current_player_y + player_height) <= (block.y + block.height)) & (current_player_y < block.y) ):
                                 current_player_y = (block.y - player_height)
-                                isgrounded = True
+                                self.isgrounded = True
 
                             # collision above player
                             elif (( block.y < (current_player_y) < (block.y + block.height)) & ((current_player_y + player_height)> (block.y + block.height)) ):
@@ -205,7 +206,7 @@ class player_movement:
                                         
                                     elif (vy <= 0):
                                         current_player_y = (block.y + block.height)
-                                        isgrounded = True
+                                        self.isgrounded = True
                                     
                             
 
@@ -225,7 +226,7 @@ class player_movement:
                             #if ( (block.x <= current_player_x <= (block.x + block.width)) & ( block.x <= (current_player_x + player_width) <= (block.x + block.width)) ):
                             if (vy > 0):
                                 current_player_y = (block.y - player_height)
-                                isgrounded = True
+                                self.isgrounded = True
                             elif (vy < 0):
                                 current_player_y = (block.y + block.height)
                             
@@ -241,7 +242,7 @@ class player_movement:
                         elif ( (movement_y/vy) <= (movement_x/vx) ):
                             if (vy > 0):
                                 current_player_y = (block.y - player_height)
-                                isgrounded = True
+                                self.isgrounded = True
                             elif (vy < 0):
                                 current_player_y = (block.y + block.height)
                             
@@ -254,7 +255,7 @@ class player_movement:
                             touchingwall = True
                         '''
         
-        if(isgrounded):
+        if(self.isgrounded):
             vy = 0
         if(touchingwall):
             vx = 0
@@ -262,4 +263,4 @@ class player_movement:
         current_player_x += vx
         current_player_y += vy
         
-        return current_player_x, current_player_y, vx, vy, isgrounded
+        return current_player_x, current_player_y, vx, vy, self.isgrounded

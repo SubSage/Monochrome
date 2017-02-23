@@ -246,8 +246,7 @@ class wraith:
 
         if (hit):
             self.hp = (self.hp - 1)
-            #print "hit wraith"
-            #print self.hp
+            print "wraith hp: ", self.hp
             return
         else:
             return
