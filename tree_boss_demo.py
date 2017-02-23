@@ -8,7 +8,9 @@ from pytmx.util_pygame import load_pygame
 from pygame import Rect
 from player_movement import player_movement
 from tree import tree
+from wraith import wraith
 import random
+
 # setup goes here
 pygame.init()
 tile_width = 128
@@ -75,6 +77,8 @@ FRAME_CT = 6
 Aheight = 0
 Mright = True
 Mleft = False
+root_attack = False
+level = 1
 
 player_image = pygame.image.load( "HMCF2.png" ).convert_alpha()
 clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )
@@ -115,12 +119,40 @@ while True:
             pygame.quit()
             sys.exit()
 
-    # simulation stuff goes here            
+    # this handles the stages of the game            
     if(player_alive):
         if(boss_beaten):
             screen.blit(win_screen, (0,0))
             pygame.display.flip()
-            print tree_boss.hp
+            #print tree_boss.hp
+            wkeys = pygame.key.get_pressed()
+            if ((wkeys[pygame.K_RETURN])):
+                 boss_beaten = False
+                 level = (level + 1)
+                 if(level == 2):
+                      tree_tiles == None
+                      tiled_map = load_pygame('wraith_boss.tmx')
+                      dirt = tiled_map.get_layer_by_name("dirt")
+                      ground = tiled_map.get_layer_by_name("ground")
+                      ground_blocks = [ground]
+                      ground_blocks_rect = list()
+                      boss_hitboxes = None
+                      roots = None
+                      ice_spikes = tiled_map.get_layer_by_name("ice")
+
+                      ice_attack = False
+                      wraith_image = pygame.image.load("Art Assets/Ame/Wraith/Idle Animation/IdleAnimation0000.png").convert_alpha()
+                      hurt_1 = pygame.image.load("Art Assets/Ame/Wraith/Hurt/Hurt (1).png").convert_alpha()
+                      hurt_2 = pygame.image.load("Art Assets/Ame/Wraith/Hurt/Hurt (2).png").convert_alpha()
+                      wraith_boss = wraith(ice_spikes, wraith_image, hurt_1, hurt_2)
+                      for obj in ground:
+                           box = Rect(obj.x, obj.y, obj.width, obj.height)
+                           ground_blocks_rect.append(box)
+
+                 elif(level > 2):
+                      state = "over for now"
+                      
+                    
 
         else:
             #                       #
@@ -152,7 +184,17 @@ while True:
                  if frame == 0:
                       FRAME_CT = 4
                       Aheight = 3
-                      frame = 1            
+                      frame = 1
+
+            '''
+            # THIS IS A CHEEKY DEVELOPER KEY COMMENT THIS OUT BEFORE RELEASE
+            if ((mkeys[pygame.K_SEMICOLON])):
+                if(level == 1):
+                     tree_boss.hp = 0
+                if(level == 2):
+                     print "wraith is dead"
+            '''
+            
             #                               #
             # Check for ground collisions   #
             #                               #
@@ -161,18 +203,26 @@ while True:
             #                   #
             # update tree stuff #
             #                   #
-            root_attack = tree_boss.update(dt)
+            if(level == 1):
+                 root_attack = tree_boss.update(dt)
+            if(level == 2):
+                 ice_attack = wraith_boss.update(dt)
 
                       
             #                                   #
             # check if player gets hits heart   #
             #                                   #
-            
-            if(PUNCHING):
-                tree_boss.check_heart(player, player_width, player_height)
-
-            if(tree_boss.hp < 1):
-                boss_beaten = True
+            if(level == 1):
+                 if(PUNCHING):
+                     tree_boss.check_heart(player, player_width, player_height)
+                 if(tree_boss.hp < 1):
+                     boss_beaten = True
+            if(level == 2):
+                 #print "check if wraith punched"
+                 if(PUNCHING):
+                     wraith_boss.check_hit(player, player_width, player_height, player_image, clip)
+                 if(wraith_boss.hp < 1):
+                     boss_beaten = True
                 
             #move the camera  
             cameraX = player.x - 1280/2
@@ -182,17 +232,38 @@ while True:
             screen.fill( (48, 24 , 96) )
 
             # draw all dirt tiles
-            for t_x, t_y, tile_image in dirt.tiles():
-                screen.blit(tile_image, (t_x * tile_width - cameraX, t_y * tile_height + cameraY))
+            if(level == 1):
+                 for t_x, t_y, tile_image in dirt.tiles():
+                      screen.blit(tile_image, (t_x * tile_width - cameraX, t_y * tile_height + cameraY))
+
+            elif(level == 2):
+                 for t_x, t_y, tile_image in dirt.tiles():
+                      screen.blit(tile_image, (t_x * tile_width - cameraX, t_y * tile_height + cameraY))
 
             # draw_tree [NOTE: this is slowing down the game]
-            for t_x, t_y, tile_image in tree_tiles.tiles():
-                screen.blit(tile_image, (t_x * tile_width - cameraX, t_y * tile_height + cameraY))
+            if(level == 1):
+                 for t_x, t_y, tile_image in tree_tiles.tiles():
+                      screen.blit(tile_image, (t_x * tile_width - cameraX, t_y * tile_height + cameraY))
+            elif(level == 2):
+                 #print "draw wraith"
+                 cats = "cats"
+                 screen.blit(wraith_boss.image, (wraith_boss.x - cameraX, wraith_boss.y + cameraY))
 
+                 
             # draw roots
-            for root in tree.roots:
-                screen.blit(root.image, (root.x - cameraX, root.y + cameraY))
+            if(level == 1):
+                 for root in tree_boss.roots:
+                     screen.blit(root.image, (root.x - cameraX, root.y + cameraY))
+            elif(level == 2):
+                 count = 0
+                 for ice in wraith.ices:
+                     #count = (count + 1)
+                     #print count
+                     screen.blit(ice.image, (ice.x - cameraX, ice.y + cameraY))
+                 #print "draw wraith ice"
 
+
+                 
             # draw the player
             #img = pygame.image.load( "ryu-640.png" ).convert_alpha()
             #clip = pygame.Rect( MARGIN+IMG_W*frame, 0, IMG_W, 151 )
@@ -244,12 +315,17 @@ while True:
 
             #                                   #
             # check if player gets hit by roots #
-            #
-            #
-            if (tree_boss.root_attacking):
-                 player_alive = tree_boss.root_collision(player, player_width, player_height, clip, player_image)
-                 if(not player_alive):
-                      death_time = pygame.time.get_ticks()
+            #                                   #
+            if(level == 1):
+                 if (tree_boss.root_attacking):
+                      player_alive = tree_boss.root_collision(player, player_width, player_height, clip, player_image)
+                      if(not player_alive):
+                           death_time = pygame.time.get_ticks()
+            if(level == 2):
+                 if (wraith_boss.ice_attacking):
+                      player_alive = wraith_boss.ice_collision(player, player_width, player_height, clip, player_image)
+                      if(not player_alive):
+                           death_time = pygame.time.get_ticks()
                
     else:
 

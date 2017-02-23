@@ -29,7 +29,7 @@ class tree:
     root_sprites = list()
     heart = list()
 
-    hp = 13
+    hp = 5
     root_speed = 40
 
     # these are the different states that the roots can be in
@@ -200,12 +200,12 @@ class tree:
             if ( ((h.x) < (player.x) < (h.x + h.width)) | ( (h.x) < (player.x + player_width) < (h.x + h.width) ) ):
                 if ( ((h.y) < (player.y) < (h.y + h.height)) | ( (h.y) < (player.y + player_height) < (h.y + h.height) ) ):
                     hit = True
-                    print"hit"
+                    #print"hit"
         
         if (hit):
             self.hp = (self.hp - 1)
             #print "hit"
-            print "hp: " , self.hp
+            #print "hp: " , self.hp
             return
         else:
             return

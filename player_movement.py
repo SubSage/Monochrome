@@ -13,12 +13,12 @@ class player_movement:
         #v = vector2((0,0))
 
         # pssst hey this variable changes the player speed is you wan to hard code it
-        SPEED = 17.0
+        SPEED = 4.5
         keys = pygame.key.get_pressed()
         inputX = 0
         inputY = 0
-        DECCELERATION = 40.0
-        JUMPSPEED = 12.0
+        DECCELERATION = 2.2
+        JUMPSPEED = 7.0
         PUNCHING = False
         
 
@@ -43,8 +43,8 @@ class player_movement:
             vx = (inputX * SPEED)
 
         # decceleration is slower while in midair
-        elif (isgrounded == False):
-            DECCELERATION = (DECCELERATION/16)
+        #elif (isgrounded == False):
+            #DECCELERATION = (DECCELERATION/16)
 
         # deccelerate normally while in on the ground
         '''
@@ -59,6 +59,18 @@ class player_movement:
         '''
         if (inputX == 0):
             vx = 0
+        elif(not isgrounded):
+            if (vx > 0):
+                if((vx - (DECCELERATION * dt)) > 0):
+                    vx = vx - (DECCELERATION * dt)
+                else:
+                    vx = 0
+            elif vx < 0:
+                if((vx + (DECCELERATION * dt)) < 0):
+                    vx = vx + (DECCELERATION * dt)
+                else:
+                    vx = 0
+                
         
         '''
         if (isgrounded):

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="128" tileheight="128" nextobjectid="22">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="128" tileheight="128" nextobjectid="53">
  <tileset firstgid="1" name="tree_temp" tilewidth="128" tileheight="128" tilecount="176" columns="16">
   <image source="Art Assets/Erik/Images/PNG/tree_temp.png" width="2100" height="1500"/>
  </tileset>
@@ -17,6 +17,12 @@
  </tileset>
  <tileset firstgid="377" name="undergrounds" tilewidth="128" tileheight="128" tilecount="1" columns="1">
   <image source="Art Assets/Ame/Tiles/undergrounds.jpg" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="378" name="ice" tilewidth="128" tileheight="256" tilecount="1" columns="1">
+  <image source="Art Assets/Elizardo/ice.png" width="128" height="256"/>
+ </tileset>
+ <tileset firstgid="379" name="groundwalktiles" tilewidth="128" tileheight="128" tilecount="1" columns="1">
+  <image source="Art Assets/Ame/Tiles/groundwalktiles.jpg" width="128" height="128"/>
  </tileset>
  <layer name="dirt" width="25" height="25">
   <data encoding="csv">
@@ -36,7 +42,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
+379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,
 377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
 377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
 377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,377,
@@ -50,17 +56,17 @@
  <objectgroup name="ground">
   <object id="8" name="tree_floor" x="-4" y="2048" width="3204" height="381.576"/>
  </objectgroup>
- <objectgroup name="roots">
-  <object id="11" name="root_1" gid="376" x="0" y="2944" width="128" height="256"/>
-  <object id="12" name="root_2" gid="376" x="128" y="2944" width="128" height="256"/>
-  <object id="13" name="root_3" gid="376" x="256" y="2944" width="128" height="256"/>
-  <object id="14" name="root_5" gid="376" x="512" y="2944" width="128" height="256"/>
-  <object id="15" name="root_4" gid="376" x="384" y="2944" width="128" height="256"/>
-  <object id="17" name="root_6" gid="376" x="640" y="2944" width="128" height="256"/>
-  <object id="18" name="root_7" gid="376" x="768" y="2944" width="128" height="256"/>
-  <object id="19" name="root_8" gid="376" x="896" y="2944" width="128" height="256"/>
-  <object id="20" name="root_9" gid="376" x="1024" y="2944" width="128" height="256"/>
-  <object id="21" name="root_10" gid="376" x="1152" y="2944" width="128" height="256"/>
+ <objectgroup name="ice">
+  <object id="42" name="ice_8" gid="378" x="1905.7" y="2952.24" width="128" height="256"/>
+  <object id="43" name="ice_1" gid="378" x="129.939" y="2949.21" width="128" height="256"/>
+  <object id="44" name="ice_10" gid="378" x="2426.91" y="2943.15" width="128" height="256"/>
+  <object id="45" name="ice_9" gid="378" x="2175.39" y="2958.3" width="128" height="256"/>
+  <object id="46" name="ice_2" gid="378" x="378.424" y="2946.18" width="128" height="256"/>
+  <object id="47" name="ice_7" gid="378" x="1654.18" y="2946.18" width="128" height="256"/>
+  <object id="48" name="ice_3" gid="378" x="645.091" y="2943.15" width="128" height="256"/>
+  <object id="49" name="ice_4" gid="378" x="893.576" y="2946.18" width="128" height="256"/>
+  <object id="50" name="ice_5" gid="378" x="1160.24" y="2943.15" width="128" height="256"/>
+  <object id="51" name="ice_6" gid="378" x="1414.79" y="2952.24" width="128" height="256"/>
  </objectgroup>
  <objectgroup name="player">
   <object id="10" name="player_1" gid="375" x="156.727" y="2010.31" width="64" height="128"/>
