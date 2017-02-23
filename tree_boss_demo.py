@@ -98,6 +98,9 @@ while gamestate == 0:
     pygame.event.pump()
     for evt in pygame.event.get():
         if evt.type == pygame.QUIT or evt.type == pygame.KEYDOWN and evt.key == pygame.K_ESCAPE:
+            pygame.quit()
+            sys.exit()
+        if  evt.type == pygame.KEYDOWN and evt.key == pygame.K_SPACE:
             gamestate = gamestate + 1
 
     titleframe += dt * 12
