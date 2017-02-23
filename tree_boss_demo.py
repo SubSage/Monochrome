@@ -103,7 +103,7 @@ while gamestate == 0:
         if  evt.type == pygame.KEYDOWN and evt.key == pygame.K_SPACE:
             gamestate = gamestate + 1
 
-    titleframe += dt * 12
+    titleframe += dt * 24
     print titleframe
     screen.fill( (48, 24 , 96) )
     if(int(titleframe) < 22):
