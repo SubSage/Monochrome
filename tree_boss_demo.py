@@ -75,6 +75,10 @@ FRAME_CT = 6
 Aheight = 0
 Mright = True
 Mleft = False
+Tframe = 0
+Tframe_timer = 0
+TFRAME_TIME = .20
+TFRAME_CT = 41
 
 player_image = pygame.image.load( "HMCF2.png" ).convert_alpha()
 clip = pygame.Rect(158*frame, Aheight * 154 , 160, 154 )
@@ -103,6 +107,7 @@ if(True ^ True):
 else:
     print "that is not true"
 '''
+
 while True:
     # time of current frame
     start_time = pygame.time.get_ticks()
@@ -197,12 +202,26 @@ while True:
                 screen.blit(tile_image, (t_x * tile_width - cameraX, t_y * tile_height + cameraY))
 
             # draw_tree [NOTE: this is slowing down the game]
+            '''
             for t_x, t_y, tile_image in tree_tiles.tiles():
                 screen.blit(tile_image, (t_x * tile_width - cameraX, t_y * tile_height + cameraY))
+            '''
+            if Tframe != 0:
+                 if Tframe_timer > TFRAME_TIME:
+                      Tframe_timer -= TFRAME_TIME
+                      Tframe = (Tframe + 1) % TFRAME_CT
+                 Tframe_timer += dt
+            if Tframe == 0:
+                 Tx = 1 + Tframe
+                 Tname = pygame.image.load( "tree000" + str(Tx) + ".png").convert_alpha()
+                 screen.blit( Tname , (40, 2000))
+                 Tframe = 1
 
+                 
             # draw roots
             for root in tree.roots:
                 screen.blit(root.image, (root.x - cameraX, root.y + cameraY))
+                
 
             # draw the player
             #img = pygame.image.load( "ryu-640.png" ).convert_alpha()
@@ -213,7 +232,7 @@ while True:
                       frame_timer -= FRAME_TIME
                       frame = (frame + 1) % FRAME_CT
                  frame_timer += dt
-            
+             
            # img = pygame.image.load( "HMCF.png" ).convert_alpha()
             #clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )            
             

@@ -5,6 +5,11 @@
  </tileset>
  <tileset firstgid="177" name="treewithaheart02" tilewidth="128" tileheight="128" tilecount="42" columns="7">
   <image source="Art Assets/Erik/Images/JPEG/treewithaheart02.jpg" width="1008" height="792"/>
+  <tile id="17">
+   <animation>
+    <frame tileid="26" duration="100"/>
+   </animation>
+  </tile>
  </tileset>
  <tileset firstgid="219" name="patformkenney-128-4x39" tilewidth="128" tileheight="128" tilecount="156" columns="4">
   <image source="patformkenney-128-4x39.png" width="512" height="4992"/>
@@ -44,7 +49,7 @@
 367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367,367
 </data>
  </layer>
- <layer name="tree" width="25" height="25">
+ <layer name="tree" width="25" height="25" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
