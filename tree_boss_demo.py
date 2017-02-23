@@ -136,6 +136,8 @@ while True:
                       FRAME_CT = 7
                       Aheight = 0
                       frame = 1
+                      #if frame == 0:
+                       #    clip = pygame.Rect(158 +158*frame, Aheight * 154 , 160, 154 )
             if ((mkeys[pygame.K_d])|(mkeys[pygame.K_RIGHT])):
                  Mleft = False
                  Mright = True
@@ -143,16 +145,25 @@ while True:
                       FRAME_CT = 7
                       Aheight = 0
                       frame = 1
+                      #if frame == 0:
+                       #    clip = pygame.Rect( 158 +158*frame, Aheight * 154 , 160, 154 )
             if ((mkeys[pygame.K_w])|(mkeys[pygame.K_UP])):
                  if frame ==0:
                       FRAME_CT = 5
                       Aheight = 2
                       frame = 1
+                      #if Mleft == True:
+                       #    if frame == 0:
+                        #        clip = pygame.Rect(2* 158 +158*frame, Aheight * 154 , 160, 154 )
+                           
             if ((mkeys[pygame.K_z])|(mkeys[pygame.K_SPACE])):
                  if frame == 0:
                       FRAME_CT = 6
                       Aheight = 3
-                      frame = 1            
+                      frame = 1
+                      #if Mleft == True:
+                       #    if frame == 0:
+                        #        clip = pygame.Rect(158 +158*frame, Aheight * 154 , 160, 154 )
             #                               #
             # Check for ground collisions   #
             #                               #
@@ -204,7 +215,7 @@ while True:
                  frame_timer += dt
             
            # img = pygame.image.load( "HMCF.png" ).convert_alpha()
-            clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )            
+            #clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )            
             
             #screen.blit(img, (22,0), area=clip, special_flags=pygame.BLEND_RGBA_MIN )
             #screen.blit(player.image, (player.x - cameraX, player.y + cameraY ))
