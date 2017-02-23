@@ -12,7 +12,7 @@ import random
 pygame.init()
 tile_width = 128
 tile_height = 128
-screen = pygame.display.set_mode((1280,640),pygame.FULLSCREEN)
+screen = pygame.display.set_mode((1280,640), pygame.FULLSCREEN)
 pygame.display.set_caption( "TreeBoss" )
 tiled_map = load_pygame('tree_boss.tmx')
 layer = 0
@@ -65,6 +65,16 @@ FRAME_CT = 6
 Aheight = 0
 Mright = True
 Mleft = False
+titleframe = 0
+titleanimations= list()
+titlepicture = pygame.image.load( "Art Assets\Ame\Monochrome-Titlescreen\Monochrome-Titlescreen0001.jpg" ).convert()
+for x in range(1, 9):
+    titlepicture = pygame.image.load( "Art Assets\Ame\Monochrome-Titlescreen\Monochrome-Titlescreen000" + str(x) + ".jpg" ).convert()
+    titleanimations.append(titlepicture)
+for x in range(10, 24):
+    titlepicture = pygame.image.load( "Art Assets\Ame\Monochrome-Titlescreen\Monochrome-Titlescreen00" + str(x) + ".jpg" ).convert()
+    titleanimations.append(titlepicture)
+gamestate=0 # this is to move the game along from title to fight 1, 2, 3, end title
 
 player_image = pygame.image.load( "HMCF2.png" ).convert_alpha()
 clip = pygame.Rect(158*frame, Aheight * 154 , 160, 154 )
@@ -79,8 +89,28 @@ for obj in boss_hitboxes:
 
     #player.box.y = float(player.box.y)
     #player.box.y = player.box.y + 0.16
+previousFrameTime = pygame.time.get_ticks()
+#################################################################################################
+while gamestate == 0:
+    start_time = pygame.time.get_ticks()
+    dt = (start_time - previousFrameTime) / 1000.0
+    previousFrameTime = start_time
+    pygame.event.pump()
+    for evt in pygame.event.get():
+        if evt.type == pygame.QUIT or evt.type == pygame.KEYDOWN and evt.key == pygame.K_ESCAPE:
+            gamestate = gamestate + 1
 
-while True:
+    titleframe += dt * 12
+    print titleframe
+    screen.fill( (48, 24 , 96) )
+    if(int(titleframe) < 22):
+        screen.blit(titleanimations[int(titleframe)], (0,0))
+    else:
+        screen.blit(titlepicture, (0,0))
+    pygame.display.flip()
+
+##################################################################################################
+while gamestate == 1:
     # time of current frame
     start_time = pygame.time.get_ticks()
 
@@ -95,9 +125,9 @@ while True:
     # simulation stuff goes here
     if(player_alive):
         if(boss_beaten):
-            screen.blit(win_screen, (0,0))
-            pygame.display.flip()
-            print tree_boss.hp
+            gamestate = gamestate + 1
+            #screen.blit(win_screen, (0,0))
+            #pygame.display.flip()
 
         else:
             # update player speed
@@ -202,7 +232,6 @@ while True:
                       death_time = pygame.time.get_ticks()
 
     else:
-
         if((pygame.time.get_ticks()) > (death_time + death_delay)):
              screen.blit(death_screen, (0,0))
              pygame.display.flip()
