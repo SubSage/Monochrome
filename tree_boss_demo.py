@@ -58,7 +58,10 @@ tree_boss = tree(roots, root_width, boss_heart)
 player_alive = True
 boss_beaten = False
 death_screen = pygame.image.load( "death_screen.jpg" ).convert()
-win_screen = pygame.image.load( "win_screen.jpg" ).convert()
+TD1 = pygame.image.load( "TD2.jpg" ).convert()
+ID1 = pygame.image.load( "ID1.jpg" ).convert()
+win_screen = pygame.image.load("win_screen.jpg").convert()
+win_screen2 = pygame.image.load( "WIN.jpg" ).convert()
 PUNCHING = False
 death_time = 0
 death_delay = 1000.00
@@ -72,6 +75,13 @@ Mright = True
 Mleft = False
 root_attack = False
 level = 1
+pygame.mixer.pre_init( 44100, -16, 2 )
+TH = pygame.mixer.Sound( "THS1.wav" )
+TD = pygame.mixer.Sound(" TDS1.wav")
+SH = pygame.mixer.Sound(" SHS1.wav")
+
+pygame.mixer.music.load( "Fightmusic.ogg" )
+pygame.mixer.music.play(3)
 
 player_image = pygame.image.load( "HMCF2.png" ).convert_alpha()
 clip = pygame.Rect(158*frame, Aheight * 154 , 160, 154 )
@@ -138,7 +148,10 @@ while True:
      if(player_alive):
           if(boss_beaten):
                #print boss_beaten
-               screen.blit(win_screen, (0,0))
+               if level == 1:
+                    screen.blit(win_screen, (0,0))
+               else:
+                    screen.blit(win_screen2,(0,0))
                pygame.display.flip()
                #print tree_boss.hp
                wkeys = pygame.key.get_pressed()
@@ -192,22 +205,29 @@ while True:
 
                if ((mkeys[pygame.K_w]) or (mkeys[pygame.K_UP])):
                     if frame == 0:
-                         FRAME_CT = 5
+                         FRAME_CT = 7
                          Aheight = 2
                          frame = 1
 
                if ((mkeys[pygame.K_z]) or (mkeys[pygame.K_SPACE])):
                     if frame == 0:
-                         FRAME_CT = 6
+                         FRAME_CT = 7
                          Aheight = 3
                          frame = 1
-
+               else:
+                    if frame == 0:
+                         FRAME_CT = 7
+                         Aheight = 1
+                         frame = 1
+                         
                # THIS IS A CHEEKY DEVELOPER KEY COMMENT THIS OUT BEFORE RELEASE
+               '''
                if ((mkeys[pygame.K_SEMICOLON])):
                     if(level == 1):
                          tree_boss.hp = 0
                     if(level == 2):
                          wraith_boss.hp = 0
+                         '''
 
                #                               #
                # Check for ground collisions   #
@@ -229,12 +249,15 @@ while True:
                if(level == 1):
                     if(PUNCHING):
                          tree_boss.check_heart(player, player_width, player_height)
+                         TH.play()
                     if(tree_boss.hp < 1):
+                         TD.play()
                          boss_beaten = True
                if(level == 2):
                     #print "check if wraith punched"
                     if(PUNCHING):
                          wraith_boss.check_hit(player, player_width, player_height, player_image, clip)
+                         SH.play()
                     if(wraith_boss.hp < 1):
                          boss_beaten = True
 
@@ -324,5 +347,8 @@ while True:
 
      else:
           if((pygame.time.get_ticks()) > (death_time + death_delay)):
-               screen.blit(death_screen, (0,0))
+               if level == 1:
+                    screen.blit(TD1, (0,0))
+               if level == 2:
+                    screen.blit(ID1, (0,0))
                pygame.display.flip()
