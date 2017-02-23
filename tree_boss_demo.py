@@ -73,6 +73,8 @@ frame_timer = 0
 FRAME_TIME = .10
 FRAME_CT = 6
 Aheight = 0
+Mright = True
+Mleft = False
 
 player_image = pygame.image.load( "HMCF2.png" ).convert_alpha()
 clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )
@@ -126,25 +128,31 @@ while True:
             #                       #
             vx,vy, PUNCHING = player_movement.update_velocities(SPEED, dt, GRAV, vx, vy, isgrounded )
                         #sprite controls
-            
             mkeys = pygame.key.get_pressed()
             if ((mkeys[pygame.K_a])|(mkeys[pygame.K_LEFT])):
-                 flippic = True
+                 Mleft = True
+                 Mright = False
                  if frame == 0:
+                      FRAME_CT = 4
                       Aheight = 0
                       frame = 1
             if ((mkeys[pygame.K_d])|(mkeys[pygame.K_RIGHT])):
-                 flippic =False
+                 Mleft = False
+                 Mright = True
                  if frame == 0:
+                      FRAME_CT = 4
                       Aheight = 0
                       frame = 1
             if ((mkeys[pygame.K_w])|(mkeys[pygame.K_UP])):
-                 None
+                 if frame ==0:
+                      FRAME_CT = 4
+                      Aheight = 2
+                      frame = 1
             if ((mkeys[pygame.K_z])|(mkeys[pygame.K_SPACE])):
                  if frame == 0:
+                      FRAME_CT = 4
                       Aheight = 3
-                      frame = 1
-             
+                      frame = 1            
             #                               #
             # Check for ground collisions   #
             #                               #
@@ -195,13 +203,14 @@ while True:
                       frame = (frame + 1) % FRAME_CT
                  frame_timer += dt
             
-            img = pygame.image.load( "HMCF.png" ).convert_alpha()
+           # img = pygame.image.load( "HMCF.png" ).convert_alpha()
             clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )            
             
             #screen.blit(img, (22,0), area=clip, special_flags=pygame.BLEND_RGBA_MIN )
             #screen.blit(player.image, (player.x - cameraX, player.y + cameraY ))
             #print player.x
             #print player.y
+            '''
             if flippic == False:
                  screen.blit(img, (player.x - cameraX, player.y + cameraY ),area = clip )
                  #print isgrounded
@@ -212,7 +221,21 @@ while True:
                  player_image = pygame.transform.flip(img, True, False)
                                                 
             pygame.display.flip()
-
+               '''
+            img = player_image
+            Bimg = pygame.transform.flip(player_image, True , False)
+            clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )
+            
+            if Mright == True:
+                 screen.blit(img, (player.x - cameraX, player.y + cameraY ),clip )
+            if Mleft == True:
+                 #Bimg = pygame.transform.flip(img, True, False)
+                 screen.blit(Bimg , (player.x - cameraX, player.y + cameraY ),clip)
+               
+                 
+                
+                                                
+            pygame.display.flip()
             dt = (start_time - previousFrameTime) / 1000.0
             previousFrameTime = start_time
             if (dt > 0.2):
@@ -221,7 +244,8 @@ while True:
 
             #                                   #
             # check if player gets hit by roots #
-            #                                   #
+            #
+            #
             if (tree_boss.root_attacking):
                  player_alive = tree_boss.root_collision(player, player_width, player_height, clip, player_image)
                  if(not player_alive):
