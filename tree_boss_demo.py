@@ -11,15 +11,13 @@ from tree import tree
 from wraith import wraith
 import random
 
-
 # setup goes here
-
 
 pygame.init()
 tile_width = 128
 tile_height = 128
 #screen = pygame.display.set_mode((1280,640),pygame.FULLSCREEN)
-screen = pygame.display.set_mode((1280,640))
+screen = pygame.display.set_mode((1280,640), pygame.FULLSCREEN)
 pygame.display.set_caption( "TreeBoss" )
 tiled_map = load_pygame('tree_boss.tmx')
 layer = 0
@@ -89,6 +87,37 @@ for obj in boss_hitboxes:
     #player.box.y = float(player.box.y)
     #player.box.y = player.box.y + 0.16
 
+titleframe = 0
+titleanimations= list()
+titlepicture = pygame.image.load( "Art Assets\Ame\Monochrome-Titlescreen\Monochrome-Titlescreen0001.jpg" ).convert()
+for x in range(1, 9):
+    titlepicture = pygame.image.load( "Art Assets\Ame\Monochrome-Titlescreen\Monochrome-Titlescreen000" + str(x) + ".jpg" ).convert()
+    titleanimations.append(titlepicture)
+for x in range(10, 24):
+    titlepicture = pygame.image.load( "Art Assets\Ame\Monochrome-Titlescreen\Monochrome-Titlescreen00" + str(x) + ".jpg" ).convert()
+    titleanimations.append(titlepicture)
+titleanimations.append(titlepicture)
+previousFrameTime = pygame.time.get_ticks()
+gamestate = 0
+while gamestate == 0:
+    start_time = pygame.time.get_ticks()
+    dt = (start_time - previousFrameTime) / 1000.0
+    previousFrameTime = start_time
+    pygame.event.pump()
+    for evt in pygame.event.get():
+        if evt.type == pygame.QUIT or evt.type == pygame.KEYDOWN and evt.key == pygame.K_ESCAPE:
+            pygame.quit()
+            sys.exit()
+        if  evt.type == pygame.KEYDOWN and evt.key == pygame.K_SPACE:
+            gamestate = gamestate + 1
+
+    titleframe += dt * 24
+    screen.fill( (48, 24 , 96) )
+    if(int(titleframe) < 22):
+        screen.blit(titleanimations[int(titleframe)], (0,0))
+    else:
+        screen.blit(titlepicture, (0,0))
+    pygame.display.flip()
 while True:
      # time of current frame
      start_time = pygame.time.get_ticks()
@@ -102,7 +131,7 @@ while True:
                sys.exit()
 
 
-     # this handles the stages of the game            
+     # this handles the stages of the game
 
     # simulation stuff goes here
 
@@ -138,7 +167,7 @@ while True:
 
                     elif(level > 2):
                          boss_beaten = True
-                         
+
           else:
                # update player speed
                vx,vy, PUNCHING = player_movement.update_velocities(SPEED, dt, GRAV, vx, vy, isgrounded )
@@ -179,7 +208,7 @@ while True:
                          tree_boss.hp = 0
                     if(level == 2):
                          wraith_boss.hp = 0
-            
+
                #                               #
                # Check for ground collisions   #
                #                               #
@@ -193,7 +222,7 @@ while True:
                if(level == 2):
                     ice_attack = wraith_boss.update(dt)
 
-                      
+
                #                                   #
                # check if player gets hits boss    #
                #                                   #
@@ -208,10 +237,10 @@ while True:
                          wraith_boss.check_hit(player, player_width, player_height, player_image, clip)
                     if(wraith_boss.hp < 1):
                          boss_beaten = True
-                         
-                  
+
+
                # Check for ground collisions
-               player.x, player.y, vx, vy, isgrounded = player_movement.check_ground(ground_blocks, player.x, player.y, player_width, player_height, vx, vy, tile_height, tile_width, SPEED, dt)                                                  
+               player.x, player.y, vx, vy, isgrounded = player_movement.check_ground(ground_blocks, player.x, player.y, player_width, player_height, vx, vy, tile_height, tile_width, SPEED, dt)
 
                #move the camera
                cameraX = player.x - 1280/2
@@ -237,7 +266,7 @@ while True:
                     #cats = "cats"
                     screen.blit(wraith_boss.image, (wraith_boss.x - cameraX, wraith_boss.y + cameraY))
 
-                 
+
                # draw spikes
                if(level == 1):
                     for root in tree_boss.roots:
@@ -248,7 +277,7 @@ while True:
                          screen.blit(ice.image, (ice.x - cameraX, ice.y + cameraY))
                          #print "draw wraith ice"
 
-  
+
                # draw the player
                if frame != 0:
                     if frame_timer > FRAME_TIME:

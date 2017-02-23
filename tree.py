@@ -16,7 +16,7 @@ class tree:
     last_root_attack = 0
     last_root_down = 0
     last_root_height_reached = 0
-    
+
 
     root_down_height = 2100
     root_warn_height = 2100
@@ -39,7 +39,7 @@ class tree:
     going_up = False
     root_height_reached = True
     root_attacking = False
-    
+
     def __init__(self, _roots, _root_width, _heart):
         flop = 0
         num = 0
@@ -48,7 +48,7 @@ class tree:
         self.root_width = _root_width
 
         self.heart.append(_heart)
-        
+
         for root in _roots:
             self.roots.append(root)
             if (flop == 0):
@@ -83,13 +83,13 @@ class tree:
         self.last_root_warn = pygame.time.get_ticks()
         self.down = False
         self.warn = True
-        self.attack = False 
+        self.attack = False
         #print "im warning you"
         for root in self.roots:
             root.y = self.root_warn_height
         self.root_attacking = False
         return
-    
+
     def root_attack(self,dt):
         self.last_root_attack = pygame.time.get_ticks()
         self.down = False
@@ -107,7 +107,7 @@ class tree:
             self.last_root_height_reached = pygame.time.get_ticks()
             self.going_up = False
 
-        for root in self.roots:    
+        for root in self.roots:
             root.y = root_level
             root.mask = pygame.mask.from_surface(root.image)
             root.rect = pygame.Rect(root.x,root.y,root.width,root.height)
@@ -168,30 +168,30 @@ class tree:
             return True
     '''
     def pp_root_collision(self,player):
-        
+
         p_mask = pygame.Rect(player.x, player.y, player.width, player.height)
         tmp1 = pygame.Surface( (player.width,player.height), pygame.SRCALPHA )
         tmp1.blit( player.image, (player.x,player.y), area=p_mask )
         m1 = pygame.mask.from_surface( tmp1 )
-        
+
         for root in self.root_sprites:
             r_mask = pygame.Rect(root.x, root.y, root.width, root.height)
             tmp2 = pygame.Surface( (root.width,root.height), pygame.SRCALPHA )
             tmp2.blit( root.image, (root.x,root.y), area=r_mask )
             m2 = pygame.mask.from_surface( tmp2 )
-            
+
             #if m1( m2, ((root.x - player.x), (root.y-player.y)) ) is not None:
             if pygame.( m2, (int(math.floor(root.x - player.x)),int(math.floor(root.y - player.y))) ) is not None:
                 print "collision"
-        
+
         for root in self.root_sprites:
             if ( pygame.sprite.spritecollide(player, self.root_sprites, False, pygame.sprite.collide_mask) )is not None:
                 print "collide"
-            
+
         return
     '''
-                
-        
+
+
 
     def check_heart(self, player, player_width, player_height):
         hit = False
@@ -201,23 +201,22 @@ class tree:
                 if ( ((h.y) < (player.y) < (h.y + h.height)) | ( (h.y) < (player.y + player_height) < (h.y + h.height) ) ):
                     hit = True
                     #print"hit"
-        
+
         if (hit):
             self.hp = (self.hp - 1)
             #print "hit"
-            print "tree hp: " , self.hp
+            #print "tree hp: " , self.hp
             return
         else:
             return
             #print "miss"
-    
+
     def roots_to_sprites(self):
         root_sprites = list()
-        
+
         for root in self.roots:
             tmp_sprite = sprite_2(root.image,root.x,root.y,root.height,root.width)
             root_sprites.append(tmp_sprite)
 
         self.root_sprites = root_sprites
-        return     
-        
+        return

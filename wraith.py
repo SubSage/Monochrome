@@ -13,7 +13,7 @@ class wraith:
     ice_down_delay = 100.00
     wraith_teleport_delay = 6000.00
     hurt_teleport_delay = 250.00
-    
+
     last_ice_warn = 0
     last_ice_attack = 0
     last_ice_down = 0
@@ -38,7 +38,7 @@ class wraith:
     hp = 10
     ice_speed = 175
     x = 0
-    y = 1493 
+    y = 1493
 
     # these are the different states that the ices can be in
     down = False
@@ -47,7 +47,7 @@ class wraith:
     going_up = False
     ice_height_reached = True
     ice_attacking = False
-    
+
     def __init__(self, _ices, _image, _hurt, _hurt2):
         flop = 0
         num = 0
@@ -58,7 +58,7 @@ class wraith:
         self.hurt = _hurt
         self.hurt2 = _hurt2
         self.image = self.idle
-        
+
         for ice in _ices:
             self.ices.append(ice)
             if (flop == 0):
@@ -73,7 +73,7 @@ class wraith:
                 num = numbers[index]
                 flop = 0
             ice.x = (((count * 5) + num) * 128)
-           
+
 
         self.ices_to_sprites()
 
@@ -81,10 +81,10 @@ class wraith:
         cats = "cats"
         #ice_attack = False
 
-        
+
         if ( ((pygame.time.get_ticks() - self.last_wraith_teleport) > self.wraith_teleport_delay)):
             self.wraith_teleport()
-            
+
         if ( ((pygame.time.get_ticks() - self.last_ice_down) > self.ice_attack_delay) & (self.down | self.going_up) ):
             #self.ice_warn()
             self.ice_attack(dt)
@@ -102,18 +102,18 @@ class wraith:
         self.last_wraith_teleport = pygame.time.get_ticks()
         #print "wraith teleporting"
         #print "wraith_x = " , self.x
-        
+
     def ice_warn(self):
         self.last_ice_warn = pygame.time.get_ticks()
         self.down = False
         self.warn = True
-        self.attack = False 
+        self.attack = False
         #print "im warning you"
         for ice in self.ices:
             ice.y = self.ice_warn_height
         self.ice_attacking = False
         return
-    
+
     def ice_attack(self,dt):
         self.last_ice_attack = pygame.time.get_ticks()
         self.down = False
@@ -131,7 +131,7 @@ class wraith:
             self.last_ice_height_reached = pygame.time.get_ticks()
             self.going_up = False
 
-        for ice in self.ices:    
+        for ice in self.ices:
             ice.y = ice_level
             ice.mask = pygame.mask.from_surface(ice.image)
             ice.rect = pygame.Rect(ice.x,ice.y,ice.width,ice.height)
@@ -192,30 +192,30 @@ class wraith:
             return True
     '''
     def pp_ice_collision(self,player):
-        
+
         p_mask = pygame.Rect(player.x, player.y, player.width, player.height)
         tmp1 = pygame.Surface( (player.width,player.height), pygame.SRCALPHA )
         tmp1.blit( player.image, (player.x,player.y), area=p_mask )
         m1 = pygame.mask.from_surface( tmp1 )
-        
+
         for ice in self.ice_sprites:
             r_mask = pygame.Rect(ice.x, ice.y, ice.width, ice.height)
             tmp2 = pygame.Surface( (ice.width,ice.height), pygame.SRCALPHA )
             tmp2.blit( ice.image, (ice.x,ice.y), area=r_mask )
             m2 = pygame.mask.from_surface( tmp2 )
-            
+
             #if m1( m2, ((ice.x - player.x), (ice.y-player.y)) ) is not None:
             if pygame.( m2, (int(math.floor(ice.x - player.x)),int(math.floor(ice.y - player.y))) ) is not None:
                 print "collision"
-        
+
         for ice in self.ice_sprites:
             if ( pygame.sprite.spritecollide(player, self.ice_sprites, False, pygame.sprite.collide_mask) )is not None:
                 print "collide"
-            
+
         return
     '''
-                
-        
+
+
 
     def check_hit(self, player, player_width, player_height, player_image, clip):
         hit = False
@@ -246,19 +246,18 @@ class wraith:
 
         if (hit):
             self.hp = (self.hp - 1)
-            print "wraith hp: ", self.hp
+            #print "wraith hp: ", self.hp
             return
         else:
             return
             #print "miss"
-    
+
     def ices_to_sprites(self):
         ice_sprites = list()
-        
+
         for ice in self.ices:
             tmp_sprite = sprite_2(ice.image,ice.x,ice.y,ice.height,ice.width)
             ice_sprites.append(tmp_sprite)
 
         self.ice_sprites = ice_sprites
-        return     
-        
+        return
