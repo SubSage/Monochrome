@@ -77,7 +77,7 @@ Mright = True
 Mleft = False
 
 player_image = pygame.image.load( "HMCF2.png" ).convert_alpha()
-clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )
+clip = pygame.Rect(158*frame, Aheight * 154 , 160, 154 )
 '''
 for obj in floors:
     box = Rect(obj.points[0][0], obj.points[0][1], obj.points[1][0] - obj.points[0][0], obj.points[3][1] - obj.points[0][1])
@@ -133,24 +133,24 @@ while True:
                  Mleft = True
                  Mright = False
                  if frame == 0:
-                      FRAME_CT = 4
+                      FRAME_CT = 7
                       Aheight = 0
                       frame = 1
             if ((mkeys[pygame.K_d])|(mkeys[pygame.K_RIGHT])):
                  Mleft = False
                  Mright = True
                  if frame == 0:
-                      FRAME_CT = 4
+                      FRAME_CT = 7
                       Aheight = 0
                       frame = 1
             if ((mkeys[pygame.K_w])|(mkeys[pygame.K_UP])):
                  if frame ==0:
-                      FRAME_CT = 4
+                      FRAME_CT = 5
                       Aheight = 2
                       frame = 1
             if ((mkeys[pygame.K_z])|(mkeys[pygame.K_SPACE])):
                  if frame == 0:
-                      FRAME_CT = 4
+                      FRAME_CT = 6
                       Aheight = 3
                       frame = 1            
             #                               #
@@ -224,7 +224,7 @@ while True:
                '''
             img = player_image
             Bimg = pygame.transform.flip(player_image, True , False)
-            clip = pygame.Rect( 164 + 158*frame, Aheight * 154 , 160, 154 )
+            clip = pygame.Rect(158*frame, Aheight * 154 , 160, 154 )
             
             if Mright == True:
                  screen.blit(img, (player.x - cameraX, player.y + cameraY ),clip )
@@ -246,11 +246,11 @@ while True:
             # check if player gets hit by roots #
             #
             #
-            if (tree_boss.root_attacking):
+            '''if (tree_boss.root_attacking):
                  player_alive = tree_boss.root_collision(player, player_width, player_height, clip, player_image)
                  if(not player_alive):
                       death_time = pygame.time.get_ticks()
-               
+               '''
     else:
 
         if((pygame.time.get_ticks()) > (death_time + death_delay)):
